@@ -58,7 +58,7 @@ export function StationDetailPage() {
         if (data && data.length > 0) {
           setStation(data[0]);
         } else {
-          setError('Стан��ия не найдена.');
+          setError('Станция не найдена.');
         }
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Произошла неизвестная ошибка.');
@@ -89,8 +89,8 @@ export function StationDetailPage() {
   };
   const translatedTags = station?.tags ? station.tags.split(',').map(tag => translateGenre(tag.trim())).join(', ') : '';
   const metaDescription = station
-    ? `Слушать радио ${station.name} онлайн бесплатно в жанрах ${translatedTags} из ${translateCountry(station.country)} на PopFM.ru`.substring(0, 158)
-    : 'Слушайте онлайн-радио на PopFM.ru';
+    ? `${station.name} слу��ать радио онлайн бесплатно в жанрах ${translatedTags} из ${translateCountry(station.country)} на popFM.ru`.substring(0, 158)
+    : 'Слушайте онлайн-радио на popFM.ru';
   const jsonLd = station ? {
     "@context": "https://schema.org",
     "@type": "BroadcastService",
@@ -122,7 +122,7 @@ export function StationDetailPage() {
           {!isLoading && !error && station && (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
               <Helmet>
-                <title>{`${station.name} - Слушать радио онлайн`}</title>
+                <title>{`Слушать радио ${station.name} онлайн - popFM.ru`}</title>
                 <meta name="description" content={metaDescription} />
                 {jsonLd && <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>}
               </Helmet>
@@ -141,7 +141,7 @@ export function StationDetailPage() {
                   />
                 </div>
                 <div className="md:col-span-2">
-                  <h1 className="font-pixel text-4xl md:text-5xl text-retro-primary mb-2">{station.name}</h1>
+                  <h1 className="font-pixel text-4xl md:text-5xl text-retro-primary mb-2">{`${station.name} радио онлайн`}</h1>
                   <p className="text-lg text-retro-accent/80 mb-8">{translatedTags}</p>
                   <div className="flex items-center gap-4 mb-8">
                     <Button onClick={() => playStation(station)} size="lg" className="font-pixel text-xl bg-retro-primary hover:bg-retro-primary/80 text-retro-background px-8 py-6 flex items-center gap-3">
@@ -154,7 +154,7 @@ export function StationDetailPage() {
                   <div className="space-y-4 border-t-2 border-retro-primary/30 pt-6">
                     <InfoItem icon={Globe} label="Страна" value={translateCountry(station.country)} />
                     <InfoItem icon={Radio} label="Кодек" value={`${station.codec} @ ${station.bitrate}kbps`} />
-                    <InfoItem icon={Heart} label="Голоса" value={station.votes} />
+                    <InfoItem icon={Heart} label="��олоса" value={station.votes} />
                     <InfoItem icon={Tag} label="Язык" value={station.language} />
                     {station.homepage && (
                        <div className="flex items-center gap-3 text-lg">

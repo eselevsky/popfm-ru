@@ -2,14 +2,14 @@ import type { RadioStation } from '@shared/types';
 import { usePlayerStore } from '@/store/playerStore';
 import { useFavoritesStore } from '@/store/favoritesStore';
 import { motion } from 'framer-motion';
-import { Play, Pause, Radio, Star } from 'lucide-react';
+import { Star } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { translateCountry } from '@/lib/localization';
 interface StationCardProps {
   station: RadioStation;
 }
 export function StationCard({ station }: StationCardProps) {
-  const navigate = useNavigate();
   const playStation = usePlayerStore((s) => s.playStation);
   const currentStation = usePlayerStore((s) => s.currentStation);
   const status = usePlayerStore((s) => s.status);
@@ -62,9 +62,9 @@ export function StationCard({ station }: StationCardProps) {
         <Link to={`/station/${station.stationuuid}`} className="hover:underline">
           <h3 className="font-pixel text-base text-retro-accent leading-tight line-clamp-2">{station.name}</h3>
         </Link>
-        <p className="text-sm text-retro-secondary/80 mt-1 line-clamp-1">{station.country}</p>
+        <p className="text-sm text-retro-secondary/80 mt-1 line-clamp-1">{translateCountry(station.country)}</p>
       </div>
-      {/* 
+      {/*
       <div className={cn(
         "absolute inset-0 bg-retro-background/80 flex items-center justify-center transition-opacity duration-300",
         isPlaying || isLoading ? "opacity-100" : "opacity-0 group-hover:opacity-100"
@@ -76,7 +76,7 @@ export function StationCard({ station }: StationCardProps) {
         ) : (
           <Play className="w-16 h-16 text-retro-accent" />
         )}
-      </div> 
+      </div>
       */}
     </motion.div>
   );
