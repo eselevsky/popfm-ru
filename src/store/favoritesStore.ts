@@ -38,7 +38,6 @@ export const useFavoritesStore = create<FavoritesState>((set, get) => ({
   addFavorite: async (stationuuid) => {
     const { userId, favorites } = get();
     if (!userId || favorites.includes(stationuuid)) return;
-    const oldFavorites = [...favorites];
     const newFavorites = [...favorites, stationuuid];
     set({ favorites: newFavorites });
     try {
@@ -49,13 +48,12 @@ export const useFavoritesStore = create<FavoritesState>((set, get) => ({
     } catch (error) {
       console.error('Failed to add favorite:', error);
       // Revert state on failure
-      set({ favorites: oldFavorites });
+      set({ favorites });
     }
   },
   removeFavorite: async (stationuuid) => {
     const { userId, favorites } = get();
     if (!userId || !favorites.includes(stationuuid)) return;
-    const oldFavorites = [...favorites];
     const newFavorites = favorites.filter((id) => id !== stationuuid);
     set({ favorites: newFavorites });
     try {
@@ -66,7 +64,7 @@ export const useFavoritesStore = create<FavoritesState>((set, get) => ({
     } catch (error) {
       console.error('Failed to remove favorite:', error);
       // Revert state on failure
-      set({ favorites: oldFavorites });
+      set({ favorites });
     }
   },
 }));

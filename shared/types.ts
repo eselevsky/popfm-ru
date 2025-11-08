@@ -51,3 +51,8 @@ export interface StationCountry {
   iso_3166_1: string;
   stationcount: number;
 }
+// Favorites Type
+export interface Favorites {
+  userId: string;
+  stationuuids: string[];
+}
