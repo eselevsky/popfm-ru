@@ -89,26 +89,28 @@ export function RadioPlayer() {
             animate={{ y: 0 }}
             exit={{ y: '100%' }}
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-            className="fixed bottom-0 left-0 right-0 h-20 bg-retro-background/80 backdrop-blur-md border-t-2 border-retro-primary/50 shadow-glow z-50"
+            className="fixed bottom-0 left-0 right-0 h-28 md:h-20 bg-retro-background/80 backdrop-blur-md border-t-2 border-retro-primary/50 shadow-glow z-50"
           >
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-between gap-4">
-              <div className="flex items-center gap-4 overflow-hidden flex-1">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex flex-col md:flex-row md:items-center justify-between gap-2 md:gap-4 py-2 md:py-0">
+              {/* Station Info (Top row on mobile, left side on desktop) */}
+              <div className="flex items-center gap-4 overflow-hidden flex-1 pt-1 md:pt-0">
                 <img
                   src={currentStation.favicon || '/favicon.ico'}
                   alt={currentStation.name}
-                  className="w-12 h-12 object-cover border-2 border-retro-secondary flex-shrink-0"
+                  className="w-10 h-10 md:w-12 md:h-12 object-cover border-2 border-retro-secondary flex-shrink-0"
                   onError={(e) => { e.currentTarget.src = '/favicon.ico'; }}
                 />
                 <div className="flex-1 overflow-hidden">
-                  <p className="text-lg font-pixel text-retro-accent truncate">{currentStation.name}</p>
+                  <p className="text-base md:text-lg font-pixel text-retro-accent truncate">{currentStation.name}</p>
                   <p className="text-sm text-retro-secondary truncate">
                     {status === 'loading' && error ? error : currentStation.country}
                   </p>
                 </div>
               </div>
-              <div className="flex items-center gap-2 md:gap-4">
+              {/* Controls (Bottom row on mobile, right side on desktop) */}
+              <div className="flex items-center justify-between md:justify-end gap-2 md:gap-4 w-full md:w-auto">
                 {status === 'error' && (
-                  <div className="flex items-center gap-2 text-red-400">
+                  <div className="hidden md:flex items-center gap-2 text-red-400">
                     <AlertTriangle size={20} />
                     <span className="hidden md:inline text-sm">{error || 'Ошибка воспроизведения'}</span>
                   </div>
@@ -125,14 +127,21 @@ export function RadioPlayer() {
                     className={cn('w-full')}
                   />
                 </div>
-                <Button onClick={togglePlayPause} variant="ghost" size="icon" className="w-12 h-12 text-retro-secondary hover:text-retro-accent hover:bg-retro-primary/20">
-                  {status === 'loading' && <Loader className="animate-spin" />}
-                  {status === 'playing' && <Pause size={28} />}
-                  {(status === 'paused' || status === 'stopped' || status === 'error') && <Play size={28} />}
-                </Button>
-                <Button onClick={stop} variant="ghost" size="icon" className="w-12 h-12 text-retro-primary hover:text-retro-accent hover:bg-retro-primary/20">
-                  <StopCircle size={28} />
-                </Button>
+                <div className="flex items-center justify-between w-full md:w-auto md:justify-start gap-2">
+                  <Button onClick={toggleMute} variant="ghost" size="icon" className="md:hidden w-12 h-12 text-retro-secondary hover:text-retro-accent">
+                    <VolumeIcon size={28} />
+                  </Button>
+                  <div className="flex items-center gap-2">
+                    <Button onClick={togglePlayPause} variant="ghost" size="icon" className="w-12 h-12 text-retro-secondary hover:text-retro-accent hover:bg-retro-primary/20">
+                      {status === 'loading' && <Loader className="animate-spin" />}
+                      {status === 'playing' && <Pause size={28} />}
+                      {(status === 'paused' || status === 'stopped' || status === 'error') && <Play size={28} />}
+                    </Button>
+                    <Button onClick={stop} variant="ghost" size="icon" className="w-12 h-12 text-retro-primary hover:text-retro-accent hover:bg-retro-primary/20">
+                      <StopCircle size={28} />
+                    </Button>
+                  </div>
+                </div>
               </div>
             </div>
           </motion.div>
