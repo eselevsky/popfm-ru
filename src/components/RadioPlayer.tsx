@@ -76,7 +76,7 @@ export function RadioPlayer() {
       audio.pause();
       audio.src = '';
     }
-  }, [status, currentStation]);
+  }, [status, currentStation, handlePlaybackError]);
   useEffect(() => {
     const audio = audioRef.current;
     if (audio) {
