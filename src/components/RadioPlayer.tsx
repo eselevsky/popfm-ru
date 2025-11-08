@@ -1,15 +1,21 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { usePlayerStore } from '@/store/playerStore';
-import { Play, Pause, StopCircle, Loader, AlertTriangle, X } from 'lucide-react';
+import { Play, Pause, StopCircle, Loader, AlertTriangle, Volume2, Volume1, VolumeX } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Slider } from '@/components/ui/slider';
 import { AnimatePresence, motion } from 'framer-motion';
+import { cn } from '@/lib/utils';
 export function RadioPlayer() {
   const audioRef = useRef<HTMLAudioElement>(null);
   const currentStation = usePlayerStore((s) => s.currentStation);
   const status = usePlayerStore((s) => s.status);
   const error = usePlayerStore((s) => s.error);
+  const volume = usePlayerStore((s) => s.volume);
+  const isMuted = usePlayerStore((s) => s.isMuted);
   const setStatus = usePlayerStore((s) => s.setStatus);
   const setError = usePlayerStore((s) => s.setError);
+  const setVolume = usePlayerStore((s) => s.setVolume);
+  const toggleMute = usePlayerStore((s) => s.toggleMute);
   const togglePlayPause = usePlayerStore((s) => s.togglePlayPause);
   const stop = usePlayerStore((s) => s.stop);
   useEffect(() => {
@@ -19,7 +25,7 @@ export function RadioPlayer() {
     const handlePause = () => setStatus('paused');
     const handleError = () => {
       console.error('Audio Error:', audio.error);
-      setError(`Ошибка ��оспроизведения: ${audio.error?.message || 'Неизвестная ошибка'}`);
+      setError(`Ошибка воспроизведения: ${audio.error?.message || 'Неизвест��ая ошибка'}`);
     };
     const handleStalled = () => setStatus('loading');
     const handleCanPlay = () => {
@@ -48,7 +54,7 @@ export function RadioPlayer() {
       audio.load();
       audio.play().catch((e) => {
         console.error("Autoplay failed:", e);
-        setError("Автовоспроизведение запрещено. Нажмите play.");
+        setError("Автовоспроизведение запре��ено. Нажмите play.");
       });
     } else if (status === 'paused') {
       audio.pause();
@@ -57,6 +63,14 @@ export function RadioPlayer() {
       audio.src = '';
     }
   }, [status, currentStation, setError]);
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (audio) {
+      audio.volume = volume;
+      audio.muted = isMuted;
+    }
+  }, [volume, isMuted]);
+  const VolumeIcon = isMuted || volume === 0 ? VolumeX : volume < 0.5 ? Volume1 : Volume2;
   return (
     <>
       <audio ref={audioRef} preload="none" />
@@ -69,12 +83,12 @@ export function RadioPlayer() {
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
             className="fixed bottom-0 left-0 right-0 h-20 bg-retro-background/80 backdrop-blur-md border-t-2 border-retro-primary/50 shadow-glow z-50"
           >
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-between">
-              <div className="flex items-center gap-4 overflow-hidden">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-between gap-4">
+              <div className="flex items-center gap-4 overflow-hidden flex-1">
                 <img
                   src={currentStation.favicon || '/favicon.ico'}
                   alt={currentStation.name}
-                  className="w-12 h-12 object-cover border-2 border-retro-secondary"
+                  className="w-12 h-12 object-cover border-2 border-retro-secondary flex-shrink-0"
                   onError={(e) => { e.currentTarget.src = '/favicon.ico'; }}
                 />
                 <div className="flex-1 overflow-hidden">
@@ -82,13 +96,25 @@ export function RadioPlayer() {
                   <p className="text-sm text-retro-secondary truncate">{currentStation.country}</p>
                 </div>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 md:gap-4">
                 {status === 'error' && (
                   <div className="flex items-center gap-2 text-red-400">
                     <AlertTriangle size={20} />
                     <span className="hidden md:inline text-sm">{error || 'Ошибка воспроизведения'}</span>
                   </div>
                 )}
+                <div className="hidden md:flex items-center gap-2 w-32">
+                  <Button onClick={toggleMute} variant="ghost" size="icon" className="w-10 h-10 text-retro-secondary hover:text-retro-accent">
+                    <VolumeIcon size={24} />
+                  </Button>
+                  <Slider
+                    value={[isMuted ? 0 : volume * 100]}
+                    onValueChange={(value) => setVolume(value[0] / 100)}
+                    max={100}
+                    step={1}
+                    className={cn('w-full')}
+                  />
+                </div>
                 <Button onClick={togglePlayPause} variant="ghost" size="icon" className="w-12 h-12 text-retro-secondary hover:text-retro-accent hover:bg-retro-primary/20">
                   {status === 'loading' && <Loader className="animate-spin" />}
                   {status === 'playing' && <Pause size={28} />}
