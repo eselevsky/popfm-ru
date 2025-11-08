@@ -9,6 +9,7 @@ import { AlertTriangle, Music, Loader } from 'lucide-react';
 import { SearchAndFilter } from '@/components/SearchAndFilter';
 import { Helmet } from 'react-helmet-async';
 import { useDebounce } from 'react-use';
+import { translateGenre } from '@/lib/localization';
 const LIMIT = 36;
 function GenreGridSkeleton() {
   return (
@@ -71,7 +72,7 @@ export function GenresPage() {
       }
       setHasMore(data.length === LIMIT);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Прои��ошла неизвестная ошибка.');
+      setError(err instanceof Error ? err.message : 'Произошла неизвестная ошибка.');
     } finally {
       setIsLoading(false);
       setIsFetchingMore(false);
@@ -80,24 +81,24 @@ export function GenresPage() {
   // Effect for new searches
   useEffect(() => {
     fetchTags(true);
-  }, [debouncedSearchTerm]);
+  }, [debouncedSearchTerm, fetchTags]);
   // Effect for infinite scroll
   useEffect(() => {
     if (offset > 0) {
       fetchTags(false);
     }
-  }, [offset]);
+  }, [offset, fetchTags]);
   return (
     <AppLayout>
       <Helmet>
-        <title>Пои��к по жанрам - popfm.ru</title>
+        <title>Поиск по жанрам - popfm.ru</title>
         <meta name="description" content="Находите онлайн-радиостанции, просматривая огромную коллекцию жанров, от рока и поп-музыки до джаза и классики, на popfm.ru." />
       </Helmet>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="py-8 md:py-10 lg:py-12">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
             <h1 className="font-pixel text-4xl md:text-5xl text-retro-primary mb-2">Поиск по жанрам</h1>
-            <p className="text-lg text-retro-accent/80 mb-8">Находите станции ваших люби��ых жанров.</p>
+            <p className="text-lg text-retro-accent/80 mb-8">Находите станции ваших любимых жанров.</p>
           </motion.div>
           <SearchAndFilter searchTerm={searchTerm} onSearchChange={setSearchTerm} placeholder="Найти жанр..." />
           {isLoading && <GenreGridSkeleton />}
@@ -118,7 +119,7 @@ export function GenresPage() {
                     className="group relative flex flex-col items-center justify-center text-center p-4 bg-black/30 border-2 border-retro-primary/30 hover:border-retro-secondary hover:shadow-glow transition-all duration-300 h-24"
                   >
                     <Music className="w-6 h-6 text-retro-secondary mb-2 transition-transform group-hover:scale-110" />
-                    <h3 className="font-mono text-sm font-bold text-retro-accent capitalize line-clamp-2">{tag.name}</h3>
+                    <h3 className="font-mono text-sm font-bold text-retro-accent capitalize line-clamp-2">{translateGenre(tag.name)}</h3>
                     <p className="text-xs text-retro-secondary/70">{tag.stationcount} станций</p>
                   </Link>
                 ))}
@@ -133,8 +134,8 @@ export function GenresPage() {
               )}
               {tags.length === 0 && !isLoading && (
                  <div className="text-center py-16">
-                    <h2 className="font-pixel text-2xl text-retro-secondary mb-2">Жанры не найден��</h2>
-                    <p className="text-retro-accent/80">Попробуйте другой поисковый ��апрос.</p>
+                    <h2 className="font-pixel text-2xl text-retro-secondary mb-2">Жанры не найдены</h2>
+                    <p className="text-retro-accent/80">Попробуйте другой поисковый запрос.</p>
                 </div>
               )}
             </>

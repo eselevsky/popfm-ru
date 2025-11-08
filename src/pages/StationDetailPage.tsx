@@ -11,6 +11,7 @@ import { motion } from 'framer-motion';
 import { AlertTriangle, ChevronRight, Play, Pause, Star, Heart, Radio, Globe, Tag, BarChart2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Helmet } from 'react-helmet-async';
+import { translateCountry, translateGenre } from '@/lib/localization';
 function StationDetailSkeleton() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -86,11 +87,12 @@ export function StationDetailPage() {
       </div>
     );
   };
+  const translatedTags = station?.tags ? station.tags.split(',').map(tag => translateGenre(tag.trim())).join(', ') : '';
   const jsonLd = station ? {
     "@context": "https://schema.org",
     "@type": "BroadcastService",
     "name": station.name,
-    "description": `Слушайте ${station.name}, онлайн-радиостанцию из ${station.country}. Жанры: ${station.tags}.`,
+    "description": `Слушайте ${station.name}, онлайн-радиостанцию из ${translateCountry(station.country)}. Жанры: ${translatedTags}.`,
     "broadcastDisplayName": station.name,
     "provider": {
       "@type": "Organization",
@@ -118,7 +120,7 @@ export function StationDetailPage() {
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
               <Helmet>
                 <title>{`Слушать ${station.name} - popfm.ru`}</title>
-                <meta name="description" content={`Слушайте ${station.name} в прямом эфире. Онлайн-радиостанция из ${station.country} с жанра��и ${station.tags}. Включайте на popfm.ru.`} />
+                <meta name="description" content={`Слушайте ${station.name} в прямом эфире. Онлайн-радиостанция из ${translateCountry(station.country)} с жанрами ${translatedTags}. Включайте на popfm.ru.`} />
                 {jsonLd && <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>}
               </Helmet>
               <div className="flex items-center text-lg text-retro-accent/80 mb-4">
@@ -137,7 +139,7 @@ export function StationDetailPage() {
                 </div>
                 <div className="md:col-span-2">
                   <h1 className="font-pixel text-4xl md:text-5xl text-retro-primary mb-2">{station.name}</h1>
-                  <p className="text-lg text-retro-accent/80 mb-8">{station.tags.split(',').join(', ')}</p>
+                  <p className="text-lg text-retro-accent/80 mb-8">{translatedTags}</p>
                   <div className="flex items-center gap-4 mb-8">
                     <Button onClick={() => playStation(station)} size="lg" className="font-pixel text-xl bg-retro-primary hover:bg-retro-primary/80 text-retro-background px-8 py-6 flex items-center gap-3">
                       {isPlaying ? <><Pause className="w-6 h-6" /> В эфире</> : <><Play className="w-6 h-6" /> Слушать</>}
@@ -147,7 +149,7 @@ export function StationDetailPage() {
                     </Button>
                   </div>
                   <div className="space-y-4 border-t-2 border-retro-primary/30 pt-6">
-                    <InfoItem icon={Globe} label="Страна" value={station.country} />
+                    <InfoItem icon={Globe} label="Страна" value={translateCountry(station.country)} />
                     <InfoItem icon={Radio} label="Кодек" value={`${station.codec} @ ${station.bitrate}kbps`} />
                     <InfoItem icon={Heart} label="Голоса" value={station.votes} />
                     <InfoItem icon={Tag} label="Язык" value={station.language} />

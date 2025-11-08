@@ -8,6 +8,7 @@ import { motion } from 'framer-motion';
 import { AlertTriangle, Globe } from 'lucide-react';
 import { SearchAndFilter } from '@/components/SearchAndFilter';
 import { Helmet } from 'react-helmet-async';
+import { translateCountry } from '@/lib/localization';
 function CountryGridSkeleton() {
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
@@ -38,7 +39,10 @@ export function CountriesPage() {
     fetchCountries();
   }, []);
   const filteredCountries = useMemo(() => {
-    return countries.filter(country => country.name.toLowerCase().includes(searchTerm.toLowerCase()));
+    return countries.filter(country => 
+      translateCountry(country.name).toLowerCase().includes(searchTerm.toLowerCase()) ||
+      country.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
   }, [countries, searchTerm]);
   return (
     <AppLayout>
@@ -70,7 +74,7 @@ export function CountriesPage() {
                   className="group relative flex flex-col items-center justify-center text-center p-4 bg-black/30 border-2 border-retro-primary/30 hover:border-retro-secondary hover:shadow-glow transition-all duration-300 h-24"
                 >
                   <Globe className="w-6 h-6 text-retro-secondary mb-2 transition-transform group-hover:scale-110" />
-                  <h3 className="font-mono text-sm font-bold text-retro-accent line-clamp-2">{country.name}</h3>
+                  <h3 className="font-mono text-sm font-bold text-retro-accent line-clamp-2">{translateCountry(country.name)}</h3>
                   <p className="text-xs text-retro-secondary/70">{country.stationcount} станций</p>
                 </Link>
               ))}

@@ -8,6 +8,7 @@ import type { RadioStation } from '@shared/types';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AlertTriangle, ChevronRight } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
+import { translateCountry } from '@/lib/localization';
 function StationGridSkeleton() {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
@@ -39,12 +40,13 @@ export function StationsByCountryPage() {
     }
     fetchStationsByCountry();
   }, [countryName]);
-  const decodedCountryName = countryName ? decodeURIComponent(countryName) : 'Страна';
+  const decodedCountryName = countryName ? decodeURIComponent(countryName) : '��трана';
+  const translatedCountryName = translateCountry(decodedCountryName);
   return (
     <AppLayout>
       <Helmet>
-        <title>{`Радиостанции из ${decodedCountryName} - popfm.ru`}</title>
-        <meta name="description" content={`Слушайте самые ��опулярные онлайн-радиостанции из ${decodedCountryName} на popfm.ru.`} />
+        <title>{`Радиостанции из ${translatedCountryName} - popfm.ru`}</title>
+        <meta name="description" content={`Слушайте самые популярные онлайн-радиостанции из ${translatedCountryName} на popfm.ru.`} />
       </Helmet>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="py-8 md:py-10 lg:py-12">
@@ -52,10 +54,10 @@ export function StationsByCountryPage() {
             <div className="flex items-center text-lg text-retro-accent/80 mb-4">
               <Link to="/countries" className="hover:text-retro-primary">Страны</Link>
               <ChevronRight className="h-5 w-5 mx-1" />
-              <span className="text-retro-accent">{decodedCountryName}</span>
+              <span className="text-retro-accent">{translatedCountryName}</span>
             </div>
-            <h1 className="font-pixel text-4xl md:text-5xl text-retro-primary mb-2">Станции из: {decodedCountryName}</h1>
-            <p className="text-lg text-retro-accent/80 mb-8">Популярные станции из {decodedCountryName}.</p>
+            <h1 className="font-pixel text-4xl md:text-5xl text-retro-primary mb-2">Станции из: {translatedCountryName}</h1>
+            <p className="text-lg text-retro-accent/80 mb-8">Популярные станции из {translatedCountryName}.</p>
           </motion.div>
           {isLoading && <StationGridSkeleton />}
           {error && (
@@ -88,7 +90,7 @@ export function StationsByCountryPage() {
            {!isLoading && !error && stations.length === 0 && (
             <div className="text-center py-16">
                 <h2 className="font-pixel text-2xl text-retro-secondary mb-2">Станции не найдены</h2>
-                <p className="text-retro-accent/80">Мы не смогли н��йти станции для этой страны.</p>
+                <p className="text-retro-accent/80">Мы не смогли найти станции для этой страны.</p>
             </div>
            )}
         </div>

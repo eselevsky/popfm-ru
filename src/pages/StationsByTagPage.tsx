@@ -8,6 +8,7 @@ import type { RadioStation } from '@shared/types';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AlertTriangle, ChevronRight } from 'lucide-react';
 import { Helmet } from 'react-helmet-async';
+import { translateGenre } from '@/lib/localization';
 function StationGridSkeleton() {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
@@ -40,12 +41,12 @@ export function StationsByTagPage() {
     fetchStationsByTag();
   }, [tagName]);
   const decodedTagName = tagName ? decodeURIComponent(tagName) : 'Жанр';
-  const capitalizedTagName = decodedTagName.charAt(0).toUpperCase() + decodedTagName.slice(1);
+  const translatedTagName = translateGenre(decodedTagName);
   return (
     <AppLayout>
       <Helmet>
-        <title>{`Станции в жанре ${capitalizedTagName} - popfm.ru`}</title>
-        <meta name="description" content={`Слушайте лу��шие радиостанции в жанре ${decodedTagName} со всего ��ира на popfm.ru.`} />
+        <title>{`Станции в жанре ${translatedTagName} - popfm.ru`}</title>
+        <meta name="description" content={`Слушайте лучшие радиостанции в жанре ${translatedTagName} со всего мира на popfm.ru.`} />
       </Helmet>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="py-8 md:py-10 lg:py-12">
@@ -53,10 +54,10 @@ export function StationsByTagPage() {
             <div className="flex items-center text-lg text-retro-accent/80 mb-4">
               <Link to="/genres" className="hover:text-retro-primary">Жанры</Link>
               <ChevronRight className="h-5 w-5 mx-1" />
-              <span className="text-retro-accent capitalize">{decodedTagName}</span>
+              <span className="text-retro-accent capitalize">{translatedTagName}</span>
             </div>
-            <h1 className="font-pixel text-4xl md:text-5xl text-retro-primary mb-2 capitalize">Жанр: {decodedTagName}</h1>
-            <p className="text-lg text-retro-accent/80 mb-8">Популярные станции в жанре {decodedTagName}.</p>
+            <h1 className="font-pixel text-4xl md:text-5xl text-retro-primary mb-2 capitalize">Жанр: {translatedTagName}</h1>
+            <p className="text-lg text-retro-accent/80 mb-8">Популярные станции в жанре {translatedTagName}.</p>
           </motion.div>
           {isLoading && <StationGridSkeleton />}
           {error && (
