@@ -37,6 +37,7 @@ export function HomePage() {
       if (debouncedSearchTerm) {
         params.append('name', debouncedSearchTerm);
       } else {
+        params.append('countrycode', 'RU');
         params.append('order', 'votes');
         params.append('reverse', 'true');
       }
@@ -55,17 +56,17 @@ export function HomePage() {
   return (
     <AppLayout>
       <Helmet>
-        <title>popfm.ru - Ретро онлайн-ра��иоплеер</title>
-        <meta name="description" content="Откройте для себя и слушайте тысячи ��нлайн-радиостанций со всего мира с уникальным ретро-интерфейсом в стиле 90-х на popfm.ru." />
+        <title>popfm.ru - Ретро онлайн-радио плеер</title>
+        <meta name="description" content="Откройте для себя и слушайте тысячи онлайн-радиостанций со всего мира с уникальным ретро-интерфейсом в стиле 90-х на popfm.ru." />
       </Helmet>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="py-8 md:py-10 lg:py-12">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
             <h1 className="font-pixel text-4xl md:text-5xl text-retro-primary mb-2">
-              {debouncedSearchTerm ? `Результаты по "${debouncedSearchTerm}"` : 'Популярные станции'}
+              {debouncedSearchTerm ? `Результаты по "${debouncedSearchTerm}"` : 'Популярные станци�� России'}
             </h1>
             <p className="text-lg text-retro-accent/80 mb-8">
-              {debouncedSearchTerm ? 'Станции, соответствующие вашему поиску.' : 'Самые популярные станции со всего мира.'}
+              {debouncedSearchTerm ? 'Станции, соответствующие вашему поиску.' : 'Лучшие радиостанции из России.'}
             </p>
           </motion.div>
           <SearchAndFilter searchTerm={searchTerm} onSearchChange={setSearchTerm} placeholder="Найти станцию..." />

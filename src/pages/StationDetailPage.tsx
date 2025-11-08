@@ -58,7 +58,7 @@ export function StationDetailPage() {
         if (data && data.length > 0) {
           setStation(data[0]);
         } else {
-          setError('Станция ��е найдена.');
+          setError('Станция не найдена.');
         }
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Произошла неизвестная ошибка.');
@@ -88,6 +88,9 @@ export function StationDetailPage() {
     );
   };
   const translatedTags = station?.tags ? station.tags.split(',').map(tag => translateGenre(tag.trim())).join(', ') : '';
+  const metaDescription = station
+    ? `Слушать радио ${station.name} онлайн бесплатно в жанрах ${translatedTags} из ${translateCountry(station.country)} на PopFM.ru`.substring(0, 158)
+    : 'Слушайте онлайн-радио на PopFM.ru';
   const jsonLd = station ? {
     "@context": "https://schema.org",
     "@type": "BroadcastService",
@@ -119,8 +122,8 @@ export function StationDetailPage() {
           {!isLoading && !error && station && (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
               <Helmet>
-                <title>{`Слушать ${station.name} - popfm.ru`}</title>
-                <meta name="description" content={`Слушайте ${station.name} в прямом эфире. Онлайн-радиостанция из ${translateCountry(station.country)} с жанрами ${translatedTags}. Включайте на popfm.ru.`} />
+                <title>{`Слушать радио ${station.name} - popfm.ru`}</title>
+                <meta name="description" content={metaDescription} />
                 {jsonLd && <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>}
               </Helmet>
               <div className="flex items-center text-lg text-retro-accent/80 mb-4">
@@ -142,7 +145,7 @@ export function StationDetailPage() {
                   <p className="text-lg text-retro-accent/80 mb-8">{translatedTags}</p>
                   <div className="flex items-center gap-4 mb-8">
                     <Button onClick={() => playStation(station)} size="lg" className="font-pixel text-xl bg-retro-primary hover:bg-retro-primary/80 text-retro-background px-8 py-6 flex items-center gap-3">
-                      {isPlaying ? <><Pause className="w-6 h-6" /> В эфире</> : <><Play className="w-6 h-6" /> Слушать</>}
+                      {isPlaying ? <><Pause className="w-6 h-6" /> В эф��ре</> : <><Play className="w-6 h-6" /> Слушать</>}
                     </Button>
                     <Button onClick={handleToggleFavorite} variant="ghost" size="icon" className="w-14 h-14 border-2 border-retro-secondary/50 hover:border-retro-secondary hover:shadow-glow-sm">
                       <Star className={cn("w-8 h-8 text-retro-secondary transition-colors", isFavorite && "fill-current text-retro-secondary")} />
