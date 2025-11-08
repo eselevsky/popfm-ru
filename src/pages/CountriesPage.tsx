@@ -39,7 +39,7 @@ export function CountriesPage() {
     fetchCountries();
   }, []);
   const filteredCountries = useMemo(() => {
-    return countries.filter(country => 
+    return countries.filter(country =>
       translateCountry(country.name).toLowerCase().includes(searchTerm.toLowerCase()) ||
       country.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -47,7 +47,7 @@ export function CountriesPage() {
   return (
     <AppLayout>
       <Helmet>
-        <title>Поиск по странам - popfm.ru</title>
+        <title>Поис�� по странам - popfm.ru</title>
         <meta name="description" content="Исследуйте онлайн-радиостанции из стран со всего мира. Найдите свою любимую международную трансляцию на popfm.ru." />
       </Helmet>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -74,8 +74,8 @@ export function CountriesPage() {
                   className="group relative flex flex-col items-center justify-center text-center p-4 bg-black/30 border-2 border-retro-primary/30 hover:border-retro-secondary hover:shadow-glow transition-all duration-300 h-24"
                 >
                   <Globe className="w-6 h-6 text-retro-secondary mb-2 transition-transform group-hover:scale-110" />
-                  <h3 className="font-mono text-sm font-bold text-retro-accent line-clamp-2">{translateCountry(country.name)}</h3>
-                  <p className="text-xs text-retro-secondary/70">{country.stationcount} станций</p>
+                  <h3 className="font-mono text-base font-bold text-retro-accent line-clamp-2">{translateCountry(country.name)}</h3>
+                  <p className="text-xs text-retro-secondary/70">{country.stationcount} станци��</p>
                 </Link>
               ))}
             </div>
