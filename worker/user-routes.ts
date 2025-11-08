@@ -2,7 +2,7 @@ import { Hono } from "hono";
 import type { Env } from './core-utils';
 import { ok, bad, notFound, isStr } from './core-utils';
 import { FavoritesEntity } from "./entities";
-const RADIO_API_BASE = 'http://de2.api.radio-browser.info/json';
+const RADIO_API_BASE = 'https://de1.api.radio-browser.info/json';
 export function userRoutes(app: Hono<{ Bindings: Env }>) {
   // --- RADIO BROWSER API PROXY ---
   const radio = new Hono<{ Bindings: Env }>();
