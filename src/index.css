@@ -1,10 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 @layer base {
   :root {
-    /* Core Colors */
+    /* Retro Theme Colors */
+    --retro-background: 255 55% 13%; /* #1A1033 */
+    --retro-primary: 300 100% 50%; /* #FF00FF */
+    --retro-secondary: 180 100% 50%; /* #00FFFF */
+    --retro-accent: 0 0% 100%; /* #FFFFFF */
+    /* Shadcn Base Colors (Light Theme - not used but required) */
     --background: 0 0% 100%;
     --foreground: 0 0% 3.9%;
     --primary: 0 0% 9%;
@@ -24,166 +29,56 @@
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
     --input: 0 0% 89.8%;
-    --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
     --radius: 0.5rem;
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
   }
-  
   .dark {
-    --background: 0 0% 3.9%;
-    --foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 0 0% 9%;
-    --muted: 0 0% 14.9%;
+    /* Shadcn Dark Colors - Mapped to Retro Theme */
+    --background: var(--retro-background);
+    --foreground: var(--retro-accent);
+    --primary: var(--retro-primary);
+    --primary-foreground: 255 55% 13%;
+    --muted: 255 55% 20%;
     --muted-foreground: 0 0% 63.9%;
-    --border: 0 0% 14.9%;
-    --ring: 0 0% 83.1%;
-    --card: 0 0% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --secondary: 0 0% 14.9%;
-    --secondary-foreground: 0 0% 98%;
-    --accent: 0 0% 14.9%;
-    --accent-foreground: 0 0% 98%;
+    --border: 300 100% 50% / 0.2;
+    --ring: var(--retro-secondary);
+    --card: 255 55% 13% / 0.5;
+    --card-foreground: var(--retro-accent);
+    --popover: var(--retro-background);
+    --popover-foreground: var(--retro-accent);
+    --secondary: var(--retro-secondary);
+    --secondary-foreground: 255 55% 13%;
+    --accent: 300 100% 50% / 0.1;
+    --accent-foreground: var(--retro-accent);
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --input: 0 0% 14.9%;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --input: 255 55% 13% / 0.5;
   }
-  
   * {
     @apply border-border;
   }
-  
   html {
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
-  
   body {
-    @apply bg-background text-foreground;
-    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
-    text-rendering: optimizeLegibility;
+    @apply bg-retro-background text-retro-accent font-mono;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 800'%3E%3Cg fill='none' stroke='%23FFFFFF' stroke-width='1'%3E%3Cpath d='M-500 75c0 0 125-30 250-30S0 75 0 75s125 30 250 30s250-30 250-30s125-30 250-30s250 30 250 30s125 30 250 30s250-30 250-30'/%3E%3Cpath d='M-500 125c0 0 125-30 250-30S0 125 0 125s125 30 250 30s250-30 250-30s125-30 250-30s250 30 250 30s125 30 250 30s250-30 250-30'/%3E%3Cpath d='M-500 175c0 0 125-30 250-30S0 175 0 175s125 30 250 30s250-30 250-30s125-30 250-30s250 30 250 30s125 30 250 30s250-30 250-30'/%3E%3Cpath d='M-500 225c0 0 125-30 250-30S0 225 0 225s125 30 250 30s250-30 250-30s125-30 250-30s250 30 250 30s125 30 250 30s250-30 250-30'/%3E%3Cpath d='M-500 275c0 0 125-30 250-30S0 275 0 275s125 30 250 30s250-30 250-30s125-30 250-30s250 30 250 30s125 30 250 30s250-30 250-30'/%3E%3Cpath d='M-500 325c0 0 125-30 250-30S0 325 0 325s125 30 250 30s250-30 250-30s125-30 250-30s250 30 250 30s125 30 250 30s250-30 250-30'/%3E%3Cpath d='M-500 375c0 0 125-30 250-30S0 375 0 375s125 30 250 30s250-30 250-30s125-30 250-30s250 30 250 30s125 30 250 30s250-30 250-30'/%3E%3Cpath d='M-500 425c0 0 125-30 250-30S0 425 0 425s125 30 250 30s250-30 250-30s125-30 250-30s250 30 250 30s125 30 250 30s250-30 250-30'/%3E%3Cpath d='M-500 475c0 0 125-30 250-30S0 475 0 475s125 30 250 30s250-30 250-30s125-30 250-30s250 30 250 30s125 30 250 30s250-30 250-30'/%3E%3Cpath d='M-500 525c0 0 125-30 250-30S0 525 0 525s125 30 250 30s250-30 250-30s125-30 250-30s250 30 250 30s125 30 250 30s250-30 250-30'/%3E%3Cpath d='M-500 575c0 0 125-30 250-30S0 575 0 575s125 30 250 30s250-30 250-30s125-30 250-30s250 30 250 30s125 30 250 30s250-30 250-30'/%3E%3Cpath d='M-500 625c0 0 125-30 250-30S0 625 0 625s125 30 250 30s250-30 250-30s125-30 250-30s250 30 250 30s125 30 250 30s250-30 250-30'/%3E%3Cpath d='M-500 675c0 0 125-30 250-30S0 675 0 675s125 30 250 30s250-30 250-30s125-30 250-30s250 30 250 30s125 30 250 30s250-30 250-30'/%3E%3Cpath d='M-500 725c0 0 125-30 250-30S0 725 0 725s125 30 250 30s250-30 250-30s125-30 250-30s250 30 250 30s125 30 250 30s250-30 250-30'/%3E%3Cpath d='M-500 775c0 0 125-30 250-30S0 775 0 775s125 30 250 30s250-30 250-30s125-30 250-30s250 30 250 30s125 30 250 30s250-30 250-30'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    position: relative;
   }
-}
-
-@layer components {
-  /* Button System */
-  .btn {
-    @apply inline-flex items-center justify-center px-4 py-2 text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50;
-  }
-  
-  .btn-gradient {
-    @apply btn text-white shadow-primary hover:shadow-glow hover:scale-105 active:scale-95;
-    background: linear-gradient(135deg, #F38020 0%, #E55A1B 100%);
-  }
-  
-  /* Gradient System */
-  .bg-gradient-primary {
-    background: linear-gradient(135deg, #F38020 0%, #E55A1B 50%, #D14615 100%);
-  }
-  
-  .bg-gradient-rainbow {
-    background: linear-gradient(135deg, #F38020 0%, #E55A1B 25%, #D14615 50%, #ff6b35 100%);
-  }
-  
-  /* Text System */
-  .text-gradient {
-    background: linear-gradient(90deg, #F38020 0%, #E55A1B 50%, #D14615 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-  
-  .text-pretty {
-    text-wrap: pretty;
-  }
-  
-  /* Glass Morphism */
-  .glass {
-    @apply bg-white/10 backdrop-blur-md border border-white/20 shadow-glass;
-  }
-  
-  .glass-dark {
-    @apply bg-black/10 backdrop-blur-md border border-white/10 shadow-glass;
-  }
-  
-  /* Interactive Effects */
-  .floating {
-    animation: float 2s ease-in-out infinite;
-  }
-  
-  .rotating {
-    animation: rotate 2s ease-in-out infinite;
-  }
-  
-  @keyframes float {
-    0%, 100% { 
-      transform: translateY(-4px);
-    }
-    50% { 
-      transform: translateY(4px);
-    }
-  }
-  
-  @keyframes rotate {
-    0% { 
-      transform: rotate(0deg);
-    }
-    100% { 
-      transform: rotate(360deg);
-    }
-  }
-  
-  .shimmer-bg {
-    @apply relative overflow-hidden;
-  }
-  
-  .shimmer-bg::before {
-    @apply absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-white/20 to-transparent;
+  body::after {
     content: '';
-  }
-  
-  /* Layout Utilities */
-  .center {
-    @apply flex items-center justify-center;
-  }
-  
-  .center-col {
-    @apply flex flex-col items-center justify-center;
-  }
-  
-  /* Responsive Typography */
-  .text-display {
-    @apply text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-bold leading-tight;
-  }
-  
-  .text-body {
-    @apply text-base sm:text-lg text-muted-foreground leading-relaxed;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: black;
+    opacity: 0.2;
+    z-index: -1;
+    pointer-events: none;
   }
 }
