@@ -31,24 +31,11 @@ export function GenresPage() {
   const [hasMore, setHasMore] = useState(true);
   const [isFetchingMore, setIsFetchingMore] = useState(false);
   const observer = useRef<IntersectionObserver>();
-  const fetchMoreTags = useCallback(() => {
-    if (isFetchingMore || !hasMore) return;
-    fetchTags(false);
-  }, [isFetchingMore, hasMore, fetchTags]);
 
-  const lastElementRef = useCallback((node: HTMLDivElement) => {
-    if (isLoading) return;
-    if (observer.current) observer.current.disconnect();
-    observer.current = new IntersectionObserver(entries => {
-      if (entries[0].isIntersecting) {
-        fetchMoreTags();
-      }
-    });
-    if (node) observer.current.observe(node);
-  }, [isLoading, fetchMoreTags]);
   useDebounce(() => {
     setDebouncedSearchTerm(searchTerm);
   }, 500, [searchTerm]);
+
   const fetchTags = useCallback(async (isNewSearch: boolean) => {
     if (isNewSearch) {
       setIsLoading(true);
@@ -85,6 +72,22 @@ export function GenresPage() {
       setIsFetchingMore(false);
     }
   }, [offset, debouncedSearchTerm, isFetchingMore]);
+
+  const fetchMoreTags = useCallback(() => {
+    if (isFetchingMore || !hasMore) return;
+    fetchTags(false);
+  }, [isFetchingMore, hasMore, fetchTags]);
+
+  const lastElementRef = useCallback((node: HTMLDivElement) => {
+    if (isLoading) return;
+    if (observer.current) observer.current.disconnect();
+    observer.current = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting) {
+        fetchMoreTags();
+      }
+    });
+    if (node) observer.current.observe(node);
+  }, [isLoading, fetchMoreTags]);
   // Effect for new searches
   useEffect(() => {
     // This effect should only run when the search term changes.
