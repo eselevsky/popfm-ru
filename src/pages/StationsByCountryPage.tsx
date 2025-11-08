@@ -40,7 +40,7 @@ export function StationsByCountryPage() {
     }
     fetchStationsByCountry();
   }, [countryName]);
-  const decodedCountryName = countryName ? decodeURIComponent(countryName) : '��трана';
+  const decodedCountryName = countryName ? decodeURIComponent(countryName) : 'Страна';
   const translatedCountryName = translateCountry(decodedCountryName);
   return (
     <AppLayout>
@@ -56,7 +56,7 @@ export function StationsByCountryPage() {
               <ChevronRight className="h-5 w-5 mx-1" />
               <span className="text-retro-accent">{translatedCountryName}</span>
             </div>
-            <h1 className="font-pixel text-4xl md:text-5xl text-retro-primary mb-2">Станции из: {translatedCountryName}</h1>
+            <h1 className="font-pixel text-4xl md:text-5xl text-retro-primary mb-2">Слушать радио из {translatedCountryName}</h1>
             <p className="text-lg text-retro-accent/80 mb-8">Популярные станции из {translatedCountryName}.</p>
           </motion.div>
           {isLoading && <StationGridSkeleton />}

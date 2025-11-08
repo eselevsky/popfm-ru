@@ -46,7 +46,7 @@ export function StationsByTagPage() {
     <AppLayout>
       <Helmet>
         <title>{`Станции в жанре ${translatedTagName} - popfm.ru`}</title>
-        <meta name="description" content={`Слушайте лучшие радиостанции в жанре ${translatedTagName} со всего мира на popfm.ru.`} />
+        <meta name="description" content={`Слушайте лучшие радиостанции в жанре ${translatedTagName} со всего мир�� на popfm.ru.`} />
       </Helmet>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="py-8 md:py-10 lg:py-12">
@@ -56,7 +56,7 @@ export function StationsByTagPage() {
               <ChevronRight className="h-5 w-5 mx-1" />
               <span className="text-retro-accent capitalize">{translatedTagName}</span>
             </div>
-            <h1 className="font-pixel text-4xl md:text-5xl text-retro-primary mb-2 capitalize">Жанр: {translatedTagName}</h1>
+            <h1 className="font-pixel text-4xl md:text-5xl text-retro-primary mb-2 capitalize">Слушать радио в жанре {translatedTagName}</h1>
             <p className="text-lg text-retro-accent/80 mb-8">Популярные станции в жанре {translatedTagName}.</p>
           </motion.div>
           {isLoading && <StationGridSkeleton />}
