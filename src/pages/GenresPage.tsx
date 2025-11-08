@@ -31,16 +31,21 @@ export function GenresPage() {
   const [hasMore, setHasMore] = useState(true);
   const [isFetchingMore, setIsFetchingMore] = useState(false);
   const observer = useRef<IntersectionObserver>();
+  const fetchMoreTags = useCallback(() => {
+    if (isFetchingMore || !hasMore) return;
+    fetchTags(false);
+  }, [isFetchingMore, hasMore, fetchTags]);
+
   const lastElementRef = useCallback((node: HTMLDivElement) => {
-    if (isLoading || isFetchingMore) return;
+    if (isLoading) return;
     if (observer.current) observer.current.disconnect();
     observer.current = new IntersectionObserver(entries => {
-      if (entries[0].isIntersecting && hasMore) {
-        setOffset(prevOffset => prevOffset + LIMIT);
+      if (entries[0].isIntersecting) {
+        fetchMoreTags();
       }
     });
     if (node) observer.current.observe(node);
-  }, [isLoading, isFetchingMore, hasMore]);
+  }, [isLoading, fetchMoreTags]);
   useDebounce(() => {
     setDebouncedSearchTerm(searchTerm);
   }, 500, [searchTerm]);
@@ -68,7 +73,9 @@ export function GenresPage() {
         setTags(data);
         setOffset(data.length);
       } else {
+        // Append new tags and update the offset for the next fetch
         setTags(prevTags => [...prevTags, ...data]);
+        setOffset(prevOffset => prevOffset + data.length);
       }
       setHasMore(data.length === LIMIT);
     } catch (err) {
@@ -80,14 +87,13 @@ export function GenresPage() {
   }, [offset, debouncedSearchTerm, isFetchingMore]);
   // Effect for new searches
   useEffect(() => {
+    // This effect should only run when the search term changes.
+    // We disable the lint rule because adding fetchTags would cause
+    // this to re-run on every pagination fetch, which is incorrect.
     fetchTags(true);
-  }, [debouncedSearchTerm, fetchTags]);
-  // Effect for infinite scroll
-  useEffect(() => {
-    if (offset > 0) {
-      fetchTags(false);
-    }
-  }, [offset, fetchTags]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedSearchTerm]);
+
   return (
     <AppLayout>
       <Helmet>
