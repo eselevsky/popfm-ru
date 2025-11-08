@@ -7,6 +7,7 @@ import type { StationTag } from '@shared/types';
 import { motion } from 'framer-motion';
 import { AlertTriangle, Music } from 'lucide-react';
 import { SearchAndFilter } from '@/components/SearchAndFilter';
+import { Helmet } from 'react-helmet-async';
 function GenreGridSkeleton() {
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
@@ -41,6 +42,10 @@ export function GenresPage() {
   }, [tags, searchTerm]);
   return (
     <AppLayout>
+      <Helmet>
+        <title>Browse Genres - PixelPop FM</title>
+        <meta name="description" content="Discover online radio stations by browsing a vast collection of genres, from rock and pop to jazz and classical, on PixelPop FM." />
+      </Helmet>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="py-8 md:py-10 lg:py-12">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>

@@ -8,6 +8,7 @@ import { useFavoritesStore } from '@/store/favoritesStore';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AlertTriangle, Star } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 function StationGridSkeleton() {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
@@ -18,7 +19,8 @@ function StationGridSkeleton() {
   );
 }
 export function FavoritesPage() {
-  const { favorites, initialized } = useFavoritesStore(s => ({ favorites: s.favorites, initialized: s.initialized }));
+  const favorites = useFavoritesStore(s => s.favorites);
+  const initialized = useFavoritesStore(s => s.initialized);
   const [stations, setStations] = useState<RadioStation[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -46,6 +48,10 @@ export function FavoritesPage() {
   }, [favorites, initialized]);
   return (
     <AppLayout>
+      <Helmet>
+        <title>Your Favorites - PixelPop FM</title>
+        <meta name="description" content="Access your personal collection of favorite online radio stations for quick and easy listening on PixelPop FM." />
+      </Helmet>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="py-8 md:py-10 lg:py-12">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>

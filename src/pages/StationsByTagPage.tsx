@@ -7,6 +7,7 @@ import { api } from '@/lib/api-client';
 import type { RadioStation } from '@shared/types';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AlertTriangle, ChevronRight } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 function StationGridSkeleton() {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
@@ -41,6 +42,10 @@ export function StationsByTagPage() {
   const decodedTagName = tagName ? decodeURIComponent(tagName) : 'Genre';
   return (
     <AppLayout>
+      <Helmet>
+        <title>{`${decodedTagName.charAt(0).toUpperCase() + decodedTagName.slice(1)} Stations - PixelPop FM`}</title>
+        <meta name="description" content={`Listen to the best ${decodedTagName} radio stations from around the world on PixelPop FM.`} />
+      </Helmet>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="py-8 md:py-10 lg:py-12">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>

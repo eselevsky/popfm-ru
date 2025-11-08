@@ -10,6 +10,7 @@ import { useFavoritesStore } from '@/store/favoritesStore';
 import { motion } from 'framer-motion';
 import { AlertTriangle, ChevronRight, Play, Pause, Star, Heart, Radio, Globe, Tag, BarChart2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Helmet } from 'react-helmet-async';
 function StationDetailSkeleton() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -38,8 +39,12 @@ export function StationDetailPage() {
   const [station, setStation] = useState<RadioStation | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { playStation, currentStation, status } = usePlayerStore(s => ({ playStation: s.playStation, currentStation: s.currentStation, status: s.status }));
-  const { favorites, addFavorite, removeFavorite } = useFavoritesStore(s => ({ favorites: s.favorites, addFavorite: s.addFavorite, removeFavorite: s.removeFavorite }));
+  const playStation = usePlayerStore(s => s.playStation);
+  const currentStation = usePlayerStore(s => s.currentStation);
+  const status = usePlayerStore(s => s.status);
+  const favorites = useFavoritesStore(s => s.favorites);
+  const addFavorite = useFavoritesStore(s => s.addFavorite);
+  const removeFavorite = useFavoritesStore(s => s.removeFavorite);
   const isPlaying = currentStation?.stationuuid === station?.stationuuid && status === 'playing';
   const isFavorite = station ? favorites.includes(station.stationuuid) : false;
   useEffect(() => {
@@ -81,6 +86,21 @@ export function StationDetailPage() {
       </div>
     );
   };
+  const jsonLd = station ? {
+    "@context": "https://schema.org",
+    "@type": "BroadcastService",
+    "name": station.name,
+    "description": `Listen to ${station.name}, an online radio station from ${station.country}. Genres: ${station.tags}.`,
+    "broadcastDisplayName": station.name,
+    "provider": {
+      "@type": "Organization",
+      "name": "PixelPop FM"
+    },
+    "areaServed": {
+      "@type": "Country",
+      "name": station.country
+    }
+  } : null;
   return (
     <AppLayout>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -96,6 +116,11 @@ export function StationDetailPage() {
           )}
           {!isLoading && !error && station && (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
+              <Helmet>
+                <title>{`Listen to ${station.name} - PixelPop FM`}</title>
+                <meta name="description" content={`Stream ${station.name} live. An online radio station from ${station.country} featuring ${station.tags}. Tune in on PixelPop FM.`} />
+                {jsonLd && <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>}
+              </Helmet>
               <div className="flex items-center text-lg text-retro-accent/80 mb-4">
                 <Link to="/" className="hover:text-retro-primary">Home</Link>
                 <ChevronRight className="h-5 w-5 mx-1" />
