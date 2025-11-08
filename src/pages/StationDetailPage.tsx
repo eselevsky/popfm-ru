@@ -58,7 +58,7 @@ export function StationDetailPage() {
         if (data && data.length > 0) {
           setStation(data[0]);
         } else {
-          setError('Станция не найдена.');
+          setError('Стан��ия не найдена.');
         }
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Произошла неизвестная ошибка.');
@@ -122,7 +122,7 @@ export function StationDetailPage() {
           {!isLoading && !error && station && (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
               <Helmet>
-                <title>{`Слушать радио ${station.name} - popfm.ru`}</title>
+                <title>{`${station.name} - Слушать радио онлайн`}</title>
                 <meta name="description" content={metaDescription} />
                 {jsonLd && <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>}
               </Helmet>
@@ -145,7 +145,7 @@ export function StationDetailPage() {
                   <p className="text-lg text-retro-accent/80 mb-8">{translatedTags}</p>
                   <div className="flex items-center gap-4 mb-8">
                     <Button onClick={() => playStation(station)} size="lg" className="font-pixel text-xl bg-retro-primary hover:bg-retro-primary/80 text-retro-background px-8 py-6 flex items-center gap-3">
-                      {isPlaying ? <><Pause className="w-6 h-6" /> В эф��ре</> : <><Play className="w-6 h-6" /> Слушать</>}
+                      {isPlaying ? <><Pause className="w-6 h-6" /> В эфире</> : <><Play className="w-6 h-6" /> Слушать</>}
                     </Button>
                     <Button onClick={handleToggleFavorite} variant="ghost" size="icon" className="w-14 h-14 border-2 border-retro-secondary/50 hover:border-retro-secondary hover:shadow-glow-sm">
                       <Star className={cn("w-8 h-8 text-retro-secondary transition-colors", isFavorite && "fill-current text-retro-secondary")} />
