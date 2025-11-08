@@ -41,6 +41,7 @@ export function StationDetailPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const playStation = usePlayerStore(s => s.playStation);
+  const togglePlayPause = usePlayerStore(s => s.togglePlayPause);
   const currentStation = usePlayerStore(s => s.currentStation);
   const status = usePlayerStore(s => s.status);
   const favorites = useFavoritesStore(s => s.favorites);
@@ -144,7 +145,7 @@ export function StationDetailPage() {
                   <h1 className="font-pixel text-4xl md:text-5xl text-retro-primary mb-2">{`${station.name} радио онлайн`}</h1>
                   <p className="text-lg text-retro-accent/80 mb-8">{translatedTags}</p>
                   <div className="flex items-center gap-4 mb-8">
-                    <Button onClick={() => playStation(station)} size="lg" className="font-pixel text-xl bg-retro-primary hover:bg-retro-primary/80 text-retro-background px-8 py-6 flex items-center gap-3">
+                    <Button onClick={isPlaying ? togglePlayPause : () => playStation(station)} size="lg" className="font-pixel text-xl bg-retro-primary hover:bg-retro-primary/80 text-retro-background px-8 py-6 flex items-center gap-3">
                       {isPlaying ? <><Pause className="w-6 h-6" /> В эфире</> : <><Play className="w-6 h-6" /> Слушать</>}
                     </Button>
                     <Button onClick={handleToggleFavorite} variant="ghost" size="icon" className="w-14 h-14 border-2 border-retro-secondary/50 hover:border-retro-secondary hover:shadow-glow-sm">

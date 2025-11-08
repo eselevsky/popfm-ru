@@ -43,12 +43,19 @@ export const usePlayerStore = create<PlayerState>((set, get) => ({
   currentQueueIndex: 0,
   playStation: (station) => {
     const { currentStation, status } = get();
-    if (currentStation?.stationuuid === station.stationuuid && (status === 'playing' || status === 'loading')) {
-      return;
+    if (currentStation?.stationuuid === station.stationuuid) {
+      if (status === 'playing' || status === 'loading') {
+        return; // Do nothing if it's already playing or loading
+      }
+      if (status === 'paused') {
+        set({ status: 'playing' }); // Resume if paused
+        return;
+      }
     }
-    set({ 
-      currentStation: station, 
-      status: 'loading', 
+    // For a new station, or a stopped/error one, start playback
+    set({
+      currentStation: station,
+      status: 'loading',
       error: null,
       stationQueue: [station],
       currentQueueIndex: 0,
