@@ -8,7 +8,7 @@ interface SearchAndFilterProps {
 export function SearchAndFilter({
   searchTerm,
   onSearchChange,
-  placeholder = 'Поиск...',
+  placeholder = 'Search...',
 }: SearchAndFilterProps) {
   return (
     <div className="relative mb-8">

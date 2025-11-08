@@ -12,7 +12,11 @@ import { RouteErrorBoundary } from '@/components/RouteErrorBoundary';
 import '@/index.css'
 import { HomePage } from '@/pages/HomePage'
 import { AppLayout } from './components/layout/AppLayout';
-// Placeholder components for routes
+import { GenresPage } from './pages/GenresPage';
+import { StationsByTagPage } from './pages/StationsByTagPage';
+import { CountriesPage } from './pages/CountriesPage';
+import { StationsByCountryPage } from './pages/StationsByCountryPage';
+// Placeholder component for routes that are not yet implemented
 const PlaceholderPage = ({ title }: { title: string }) => (
   <AppLayout>
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -36,12 +40,22 @@ const router = createBrowserRouter([
   },
   {
     path: "/genres",
-    element: <PlaceholderPage title="Genres" />,
+    element: <GenresPage />,
+    errorElement: <RouteErrorBoundary />,
+  },
+  {
+    path: "/genres/:tagName",
+    element: <StationsByTagPage />,
     errorElement: <RouteErrorBoundary />,
   },
   {
     path: "/countries",
-    element: <PlaceholderPage title="Countries" />,
+    element: <CountriesPage />,
+    errorElement: <RouteErrorBoundary />,
+  },
+  {
+    path: "/countries/:countryName",
+    element: <StationsByCountryPage />,
     errorElement: <RouteErrorBoundary />,
   },
   {
