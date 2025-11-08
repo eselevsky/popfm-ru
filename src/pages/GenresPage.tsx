@@ -31,11 +31,9 @@ export function GenresPage() {
   const [hasMore, setHasMore] = useState(true);
   const [isFetchingMore, setIsFetchingMore] = useState(false);
   const observer = useRef<IntersectionObserver>();
-
   useDebounce(() => {
     setDebouncedSearchTerm(searchTerm);
   }, 500, [searchTerm]);
-
   const fetchTags = useCallback(async (isNewSearch: boolean) => {
     if (isNewSearch) {
       setIsLoading(true);
@@ -66,18 +64,16 @@ export function GenresPage() {
       }
       setHasMore(data.length === LIMIT);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Произошла неизвестная ошибка.');
+      setError(err instanceof Error ? err.message : 'Произошла н��известная ошибка.');
     } finally {
       setIsLoading(false);
       setIsFetchingMore(false);
     }
   }, [offset, debouncedSearchTerm, isFetchingMore]);
-
   const fetchMoreTags = useCallback(() => {
     if (isFetchingMore || !hasMore) return;
     fetchTags(false);
   }, [isFetchingMore, hasMore, fetchTags]);
-
   const lastElementRef = useCallback((node: HTMLDivElement) => {
     if (isLoading) return;
     if (observer.current) observer.current.disconnect();
@@ -96,11 +92,10 @@ export function GenresPage() {
     fetchTags(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedSearchTerm]);
-
   return (
     <AppLayout>
       <Helmet>
-        <title>Поиск по жанрам - popfm.ru</title>
+        <title>Поиск по жан��ам - popfm.ru</title>
         <meta name="description" content="Находите онлайн-радиостанции, просматривая огромную коллекцию жанров, от рока и поп-музыки до джаза и классики, на popfm.ru." />
       </Helmet>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -128,7 +123,7 @@ export function GenresPage() {
                     className="group relative flex flex-col items-center justify-center text-center p-4 bg-black/30 border-2 border-retro-primary/30 hover:border-retro-secondary hover:shadow-glow transition-all duration-300 h-24"
                   >
                     <Music className="w-6 h-6 text-retro-secondary mb-2 transition-transform group-hover:scale-110" />
-                    <h3 className="font-mono text-sm font-bold text-retro-accent capitalize line-clamp-2">{translateGenre(tag.name)}</h3>
+                    <h3 className="font-mono text-base font-bold text-retro-accent capitalize line-clamp-2">{translateGenre(tag.name)}</h3>
                     <p className="text-xs text-retro-secondary/70">{tag.stationcount} станций</p>
                   </Link>
                 ))}
@@ -138,13 +133,13 @@ export function GenresPage() {
               </div>
               {!hasMore && tags.length > 0 && (
                 <div className="text-center text-retro-secondary/70 mt-8">
-                  <p>-- Конец списка --</p>
+                  <p>-- Конец списк�� --</p>
                 </div>
               )}
               {tags.length === 0 && !isLoading && (
                  <div className="text-center py-16">
                     <h2 className="font-pixel text-2xl text-retro-secondary mb-2">Жанры не найдены</h2>
-                    <p className="text-retro-accent/80">Попробуйте другой поисковый запрос.</p>
+                    <p className="text-retro-accent/80">Попробуйт�� другой поисковый запрос.</p>
                 </div>
               )}
             </>
