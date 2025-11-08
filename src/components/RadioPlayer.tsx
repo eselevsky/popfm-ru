@@ -8,12 +8,10 @@ export function RadioPlayer() {
   const currentStation = usePlayerStore((s) => s.currentStation);
   const status = usePlayerStore((s) => s.status);
   const error = usePlayerStore((s) => s.error);
-  const { setStatus, setError, togglePlayPause, stop } = usePlayerStore((s) => ({
-    setStatus: s.setStatus,
-    setError: s.setError,
-    togglePlayPause: s.togglePlayPause,
-    stop: s.stop,
-  }));
+  const setStatus = usePlayerStore((s) => s.setStatus);
+  const setError = usePlayerStore((s) => s.setError);
+  const togglePlayPause = usePlayerStore((s) => s.togglePlayPause);
+  const stop = usePlayerStore((s) => s.stop);
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
