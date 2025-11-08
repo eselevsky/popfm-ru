@@ -1,0 +1,38 @@
+import { Link, NavLink } from 'react-router-dom';
+import { Radio, Star, Globe, Music } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { MobileNav } from './MobileNav';
+const navItems = [
+  { href: '/', label: 'Главная', icon: Radio },
+  { href: '/genres', label: 'Жанры', icon: Music },
+  { href: '/countries', label: 'Страны', icon: Globe },
+  { href: '/favorites', label: 'Избранное', icon: Star },
+];
+export function AppHeader() {
+  const navLinkClass = ({ isActive }: { isActive: boolean }) =>
+    cn(
+      'flex items-center gap-2 px-3 py-2 text-lg font-mono transition-colors hover:text-retro-primary',
+      isActive ? 'text-retro-primary' : 'text-retro-accent/80'
+    );
+  return (
+    <header className="sticky top-0 z-40 w-full border-b-2 border-retro-primary/30 bg-retro-background/80 backdrop-blur-md">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex h-20 items-center justify-between">
+        <Link to="/" className="flex items-center gap-3">
+          <Radio className="w-8 h-8 text-retro-primary animate-pulse" />
+          <span className="font-pixel text-2xl text-retro-accent">popfm.ru</span>
+        </Link>
+        <nav className="hidden md:flex items-center gap-4">
+          {navItems.map((item) => (
+            <NavLink key={item.href} to={item.href} className={navLinkClass}>
+              <item.icon className="w-5 h-5" />
+              <span>{item.label}</span>
+            </NavLink>
+          ))}
+        </nav>
+        <div className="md:hidden">
+          <MobileNav navItems={navItems} />
+        </div>
+      </div>
+    </header>
+  );
+}
