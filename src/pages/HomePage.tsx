@@ -44,7 +44,7 @@ export function HomePage() {
       setStations(data);
     } catch (err) {
       console.error("Failed to fetch stations:", err);
-      setError(err instanceof Error ? err.message : 'An unknown error occurred.');
+      setError(err instanceof Error ? err.message : 'Произошла неизвестная ошибка.');
     } finally {
       setIsLoading(false);
     }
@@ -55,25 +55,25 @@ export function HomePage() {
   return (
     <AppLayout>
       <Helmet>
-        <title>PixelPop FM - Retro Online Radio Player</title>
-        <meta name="description" content="Discover and stream thousands of online radio stations from around the world with a unique retro, 90s-inspired pixel art interface. Tune in to PixelPop FM." />
+        <title>popfm.ru - Ретро онлайн-ра��иоплеер</title>
+        <meta name="description" content="Откройте для себя и слушайте тысячи ��нлайн-радиостанций со всего мира с уникальным ретро-интерфейсом в стиле 90-х на popfm.ru." />
       </Helmet>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="py-8 md:py-10 lg:py-12">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
             <h1 className="font-pixel text-4xl md:text-5xl text-retro-primary mb-2">
-              {debouncedSearchTerm ? `Results for "${debouncedSearchTerm}"` : 'Top Stations'}
+              {debouncedSearchTerm ? `Результаты по "${debouncedSearchTerm}"` : 'Популярные станции'}
             </h1>
             <p className="text-lg text-retro-accent/80 mb-8">
-              {debouncedSearchTerm ? 'Stations matching your search.' : 'Most popular stations from around the globe.'}
+              {debouncedSearchTerm ? 'Станции, соответствующие вашему поиску.' : 'Самые популярные станции со всего мира.'}
             </p>
           </motion.div>
-          <SearchAndFilter searchTerm={searchTerm} onSearchChange={setSearchTerm} placeholder="Search for a station..." />
+          <SearchAndFilter searchTerm={searchTerm} onSearchChange={setSearchTerm} placeholder="Найти станцию..." />
           {isLoading && <StationGridSkeleton />}
           {error && (
             <div className="flex flex-col items-center justify-center text-center py-16 bg-retro-background/50 border border-red-500/50 p-8">
               <AlertTriangle className="w-16 h-16 text-red-400 mb-4" />
-              <h2 className="font-pixel text-2xl text-red-400 mb-2">Error Fetching Stations</h2>
+              <h2 className="font-pixel text-2xl text-red-400 mb-2">Ошибка загрузки станций</h2>
               <p className="text-retro-accent/80 max-w-md">{error}</p>
             </div>
           )}
@@ -99,8 +99,8 @@ export function HomePage() {
           )}
           {!isLoading && !error && stations.length === 0 && (
              <div className="text-center py-16">
-                <h2 className="font-pixel text-2xl text-retro-secondary mb-2">No Stations Found</h2>
-                <p className="text-retro-accent/80">Try a different search term or check back later.</p>
+                <h2 className="font-pixel text-2xl text-retro-secondary mb-2">Станции не найдены</h2>
+                <p className="text-retro-accent/80">Попробуйте другой поисковый запрос.</p>
             </div>
           )}
         </div>

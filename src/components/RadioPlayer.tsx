@@ -19,7 +19,7 @@ export function RadioPlayer() {
     const handlePause = () => setStatus('paused');
     const handleError = () => {
       console.error('Audio Error:', audio.error);
-      setError(`Playback error: ${audio.error?.message || 'Unknown error'}`);
+      setError(`Ошибка ��оспроизведения: ${audio.error?.message || 'Неизвестная ошибка'}`);
     };
     const handleStalled = () => setStatus('loading');
     const handleCanPlay = () => {
@@ -48,7 +48,7 @@ export function RadioPlayer() {
       audio.load();
       audio.play().catch((e) => {
         console.error("Autoplay failed:", e);
-        setError("Autoplay prevented. Click play to start.");
+        setError("Автовоспроизведение запрещено. Нажмите play.");
       });
     } else if (status === 'paused') {
       audio.pause();
@@ -86,7 +86,7 @@ export function RadioPlayer() {
                 {status === 'error' && (
                   <div className="flex items-center gap-2 text-red-400">
                     <AlertTriangle size={20} />
-                    <span className="hidden md:inline text-sm">{error || 'Playback Error'}</span>
+                    <span className="hidden md:inline text-sm">{error || 'Ошибка воспроизведения'}</span>
                   </div>
                 )}
                 <Button onClick={togglePlayPause} variant="ghost" size="icon" className="w-12 h-12 text-retro-secondary hover:text-retro-accent hover:bg-retro-primary/20">

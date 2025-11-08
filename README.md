@@ -1,106 +1,77 @@
-# PixelPop FM
-
-A retro-themed online radio player to discover and stream stations from around the world.
-
+# popfm.ru
+Ретро-стилизованный онлайн-радиоплеер дл�� поиска и прослушивания радиостанций со всего мира.
 [cloudflarebutton]
-
-PixelPop FM is a visually striking online radio streaming application with a retro, 90s-inspired 'pixel art' and 'vaporwave' aesthetic. It allows users to discover, listen to, and favorite thousands of internet radio stations from around the world. The application leverages the public Radio Browser API to provide a comprehensive and filterable directory of stations. The entire experience is wrapped in a stunning, nostalgic UI with neon glows, pixelated fonts, and glitch effects, designed to be both a functional tool and a piece of interactive art.
-
-## Key Features
-
--   **Global Radio Directory**: Access thousands of internet radio stations via the Radio Browser API.
--   **Discover & Filter**: Browse stations by genre and country, or use the search to find specific stations.
--   **Persistent Audio Player**: A global audio player that remains active while you navigate the application.
--   **Station Details**: SEO-friendly dedicated pages for each station with detailed information.
--   **Favorites**: Save your favorite stations for quick and easy access.
--   **Retro UI**: A unique, nostalgic user interface inspired by 90s pixel art and vaporwave aesthetics.
-
-## Technology Stack
-
--   **Frontend**:
+popfm.ru - это визуально яркое приложение для потокового онлайн-радио в ретро-эстетике 90-х, вдохновленной 'пиксель-артом' и 'вейпорвейвом'. Оно позволяет пользователям находить, слушать и добавлять в избранное тысячи интернет-радиостанций со всего мира. Приложение использует публич��ый API Radio Browser для предоставления обширного каталога станций с возможностью фильтрации. Весь интерфейс выполнен в потрясающем ностальгическом стиле с неоновым свечением, пиксельными шрифтами и г��итч-эффектами, являясь одновременно функциональным инструментом и произведением интерактивного искусства.
+## Ключевые особенности
+-   **Глобальный каталог радио**: Доступ к тысячам интернет-радиостанций через API Radio Browser.
+-   **Поиск и фильтрация**: Просмотр станций по жанрам и странам, а также поиск конкретных станций.
+-   **Постоянный аудиоплеер**: Глобальный аудиоплеер, который остается активным при навигации по приложению.
+-   **Страницы станций**: SEO-дружелюбные страницы для каждой станции с подробной информацией.
+-   **Избранное**: Сохраняйте люби��ые станции для быстрого и удобного доступа.
+-   **Ретро-интерфейс**: Уникальный, ностальгический пользовательский интерфейс, вдохновленный пиксель-артом 90-х и эстетикой вейпорвейва.
+## Те��нологический стек
+-   **Фронтенд**:
     -   [React](https://react.dev/)
     -   [React Router](https://reactrouter.com/)
-    -   [Zustand](https://zustand-demo.pmnd.rs/) for state management
+    -   [Zustand](https://zustand-demo.pmnd.rs/) для управления состоянием
     -   [Tailwind CSS](https://tailwindcss.com/)
-    -   [shadcn/ui](https://ui.shadcn.com/) for UI components
-    -   [Framer Motion](https://www.framer.com/motion/) for animations
-    -   [Lucide React](https://lucide.dev/) for icons
--   **Backend**:
+    -   [shadcn/ui](https://ui.shadcn.com/) для UI-компонентов
+    -   [Framer Motion](https://www.framer.com/motion/) для анимаций
+    -   [Lucide React](https://lucide.dev/) для иконок
+-   **Бэкенд**:
     -   [Cloudflare Workers](https://workers.cloudflare.com/)
-    -   [Hono](https://hono.dev/) for routing on the edge
-    -   [Cloudflare Durable Objects](https://developers.cloudflare.com/durable-objects/) for stateful storage
--   **Tooling**:
-    -   [Vite](https://vitejs.dev/) for frontend tooling
+    -   [Hono](https://hono.dev/) для маршрутизации на эдже
+    -   [Cloudflare Durable Objects](https://developers.cloudflare.com/durable-objects/) для хранения состояний
+-   **Инструменты**:
+    -   [Vite](https://vitejs.dev/) для сборки фронтенда
     -   [TypeScript](https://www.typescriptlang.org/)
-    -   [Bun](https://bun.sh/) as the runtime and package manager
-
-## Getting Started
-
-Follow these instructions to get a copy of the project up and running on your local machine for development and testing purposes.
-
-### Prerequisites
-
--   [Bun](https://bun.sh/docs/installation) installed on your machine.
--   A [Cloudflare account](https://dash.cloudflare.com/sign-up).
--   [Wrangler CLI](https://developers.cloudflare.com/workers/wrangler/install-and-update/) installed and authenticated.
-
-### Installation
-
-1.  **Clone the repository:**
+    -   [Bun](https://bun.sh/) как среда выполнения и менеджер пакетов
+## На��ало работы
+Следуйте этим инструкциям, чтобы запустить копию проекта на вашей локальной машине для разработки и тестирования.
+### Требования
+-   [Bun](https://bun.sh/docs/installation), установленный ��а вашей машине.
+-   Аккаунт [Cloudflare](https://dash.cloudflare.com/sign-up).
+-   [Wrangler CLI](https://developers.cloudflare.com/workers/wrangler/install-and-update/), установленный и аутентифицированный.
+### Установка
+1.  **Клонируйте репозиторий:**
     ```bash
-    git clone https://github.com/your-username/pixelpop_fm.git
-    cd pixelpop_fm
+    git clone https://github.com/your-username/popfm.ru.git
+    cd popfm.ru
     ```
-
-2.  **Install dependencies:**
-    This project uses Bun for package management.
+2.  **Установите зависимости:**
+    Этот проект использует Bun для управления пакетами.
     ```bash
     bun install
     ```
-
-### Running the Development Server
-
-To start the local development server, which includes both the Vite frontend and the Wrangler backend, run:
-
+### Запуск сервер�� для разработки
+Чтобы запустить локальный сервер для разработки, который включает в себя как фронтенд Vite, так и бэкенд Wrangler, выполните:
 ```bash
 bun dev
 ```
-
-The application will be available at `http://localhost:3000`.
-
-## Project Structure
-
--   `src/`: Contains the frontend React application source code.
-    -   `pages/`: Main application views/pages.
-    -   `components/`: Reusable React components.
-    -   `store/`: Zustand state management stores.
-    -   `lib/`: Utility functions and API client.
--   `worker/`: Contains the Cloudflare Worker backend code, built with Hono.
--   `shared/`: Contains TypeScript types that are shared between the frontend and the backend.
-
-## Development
-
--   **Linting**: To check for code quality and style issues, run:
+Приложение будет доступно по адресу `http://localhost:3000`.
+## Структура проекта
+-   `src/`: Содержит исход��ый код фронтенд-приложения на React.
+    -   `pages/`: Основные страницы/представления приложения.
+    -   `components/`: Переиспользуемые React-компоненты.
+    -   `store/`: Хранилища состояния Zustand.
+    -   `lib/`: Утилиты и API-клиент.
+-   `worker/`: Содержит код бэкенда Cloudflare Worker, созданный с помо��ью Hono.
+-   `shared/`: Содержит типы TypeScript, которые используются как на ��ронтенде, так и на бэкенде.
+## Разработка
+-   **Линтинг**: Для проверки ��ачества кода и стиля выполните:
     ```bash
     bun lint
     ```
-
-## Deployment
-
-This project is designed for easy deployment to Cloudflare Pages.
-
-1.  **One-Click Deploy:**
-    You can deploy this project to your Cloudflare account with a single click.
-
+## Развертывание
+Этот проект разработан для легкого развертывания на Cloudflare Pages.
+1.  **Развертывание в один клик:**
+    Вы можете развернуть этот проект в своем аккаунте Cloudflare одним щелчком мыши.
     [cloudflarebutton]
-
-2.  **Manual Deployment with Wrangler:**
-    To deploy the application manually, run the following command:
+2.  **Ручное развертывание с помощью Wrangler:**
+    Для ручного развертывания приложения ��ыполните следующую команду:
     ```bash
     bun deploy
     ```
-    This script will build the Vite application and deploy it along with the worker to your Cloudflare account using Wrangler.
-
-## License
-
-This project is licensed under the MIT License.
+    Этот скрипт с��берет приложение Vite и развернет его вместе с воркером в вашем аккаунте Cloudflare с помощью Wrangler.
+## Лицензия
+Этот проект лицензирован по лицензии MIT.

@@ -64,6 +64,7 @@ export function StationCard({ station }: StationCardProps) {
         </Link>
         <p className="text-sm text-retro-secondary/80 mt-1 line-clamp-1">{station.country}</p>
       </div>
+      {/* 
       <div className={cn(
         "absolute inset-0 bg-retro-background/80 flex items-center justify-center transition-opacity duration-300",
         isPlaying || isLoading ? "opacity-100" : "opacity-0 group-hover:opacity-100"
@@ -75,7 +76,8 @@ export function StationCard({ station }: StationCardProps) {
         ) : (
           <Play className="w-16 h-16 text-retro-accent" />
         )}
-      </div>
+      </div> 
+      */}
     </motion.div>
   );
 }

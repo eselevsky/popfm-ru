@@ -30,7 +30,7 @@ export function GenresPage() {
         const data = await api<StationTag[]>('/api/radio/tags?order=stationcount&reverse=true&hidebroken=true');
         setTags(data);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'An unknown error occurred.');
+        setError(err instanceof Error ? err.message : 'Произошла неизвестная ошибка.');
       } finally {
         setIsLoading(false);
       }
@@ -43,21 +43,21 @@ export function GenresPage() {
   return (
     <AppLayout>
       <Helmet>
-        <title>Browse Genres - PixelPop FM</title>
-        <meta name="description" content="Discover online radio stations by browsing a vast collection of genres, from rock and pop to jazz and classical, on PixelPop FM." />
+        <title>Поиск по жанрам - popfm.ru</title>
+        <meta name="description" content="Находите онлайн-радиостанции, просматривая огромную коллекцию жанров, от рока и поп-музыки до джаза и классики, на popfm.ru." />
       </Helmet>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="py-8 md:py-10 lg:py-12">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-            <h1 className="font-pixel text-4xl md:text-5xl text-retro-primary mb-2">Browse by Genre</h1>
-            <p className="text-lg text-retro-accent/80 mb-8">Discover stations from your favorite genres.</p>
+            <h1 className="font-pixel text-4xl md:text-5xl text-retro-primary mb-2">Поиск по жанрам</h1>
+            <p className="text-lg text-retro-accent/80 mb-8">Находите станции ваших люби��ых жанров.</p>
           </motion.div>
-          <SearchAndFilter searchTerm={searchTerm} onSearchChange={setSearchTerm} placeholder="Search genres..." />
+          <SearchAndFilter searchTerm={searchTerm} onSearchChange={setSearchTerm} placeholder="Найти жанр..." />
           {isLoading && <GenreGridSkeleton />}
           {error && (
             <div className="flex flex-col items-center justify-center text-center py-16 bg-retro-background/50 border border-red-500/50 p-8">
               <AlertTriangle className="w-16 h-16 text-red-400 mb-4" />
-              <h2 className="font-pixel text-2xl text-red-400 mb-2">Error Fetching Genres</h2>
+              <h2 className="font-pixel text-2xl text-red-400 mb-2">Ошибка загрузки жанров</h2>
               <p className="text-retro-accent/80 max-w-md">{error}</p>
             </div>
           )}
@@ -71,7 +71,7 @@ export function GenresPage() {
                 >
                   <Music className="w-6 h-6 text-retro-secondary mb-2 transition-transform group-hover:scale-110" />
                   <h3 className="font-mono text-sm font-bold text-retro-accent capitalize line-clamp-2">{tag.name}</h3>
-                  <p className="text-xs text-retro-secondary/70">{tag.stationcount} stations</p>
+                  <p className="text-xs text-retro-secondary/70">{tag.stationcount} станций</p>
                 </Link>
               ))}
             </div>

@@ -30,7 +30,7 @@ export function CountriesPage() {
         const data = await api<StationCountry[]>('/api/radio/countries?order=stationcount&reverse=true');
         setCountries(data);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'An unknown error occurred.');
+        setError(err instanceof Error ? err.message : 'Произошла неизвестная ошибка.');
       } finally {
         setIsLoading(false);
       }
@@ -43,21 +43,21 @@ export function CountriesPage() {
   return (
     <AppLayout>
       <Helmet>
-        <title>Browse by Country - PixelPop FM</title>
-        <meta name="description" content="Explore online radio stations from countries all over the world. Find your favorite international broadcast on PixelPop FM." />
+        <title>Поиск по странам - popfm.ru</title>
+        <meta name="description" content="Исследуйте онлайн-радиостанции из стран со всего мира. Найдите свою любимую международную трансляцию на popfm.ru." />
       </Helmet>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="py-8 md:py-10 lg:py-12">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-            <h1 className="font-pixel text-4xl md:text-5xl text-retro-primary mb-2">Browse by Country</h1>
-            <p className="text-lg text-retro-accent/80 mb-8">Explore radio stations from around the world.</p>
+            <h1 className="font-pixel text-4xl md:text-5xl text-retro-primary mb-2">Поиск по странам</h1>
+            <p className="text-lg text-retro-accent/80 mb-8">Исследуйте радиостанции со всего мира.</p>
           </motion.div>
-          <SearchAndFilter searchTerm={searchTerm} onSearchChange={setSearchTerm} placeholder="Search countries..." />
+          <SearchAndFilter searchTerm={searchTerm} onSearchChange={setSearchTerm} placeholder="Найти страну..." />
           {isLoading && <CountryGridSkeleton />}
           {error && (
             <div className="flex flex-col items-center justify-center text-center py-16 bg-retro-background/50 border border-red-500/50 p-8">
               <AlertTriangle className="w-16 h-16 text-red-400 mb-4" />
-              <h2 className="font-pixel text-2xl text-red-400 mb-2">Error Fetching Countries</h2>
+              <h2 className="font-pixel text-2xl text-red-400 mb-2">Ошибка загрузки стран</h2>
               <p className="text-retro-accent/80 max-w-md">{error}</p>
             </div>
           )}
@@ -71,7 +71,7 @@ export function CountriesPage() {
                 >
                   <Globe className="w-6 h-6 text-retro-secondary mb-2 transition-transform group-hover:scale-110" />
                   <h3 className="font-mono text-sm font-bold text-retro-accent line-clamp-2">{country.name}</h3>
-                  <p className="text-xs text-retro-secondary/70">{country.stationcount} stations</p>
+                  <p className="text-xs text-retro-secondary/70">{country.stationcount} станций</p>
                 </Link>
               ))}
             </div>

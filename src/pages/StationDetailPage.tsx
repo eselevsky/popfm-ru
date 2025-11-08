@@ -57,10 +57,10 @@ export function StationDetailPage() {
         if (data && data.length > 0) {
           setStation(data[0]);
         } else {
-          setError('Station not found.');
+          setError('Станция ��е найдена.');
         }
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'An unknown error occurred.');
+        setError(err instanceof Error ? err.message : 'Произошла неизвестная ошибка.');
       } finally {
         setIsLoading(false);
       }
@@ -90,11 +90,11 @@ export function StationDetailPage() {
     "@context": "https://schema.org",
     "@type": "BroadcastService",
     "name": station.name,
-    "description": `Listen to ${station.name}, an online radio station from ${station.country}. Genres: ${station.tags}.`,
+    "description": `Слушайте ${station.name}, онлайн-радиостанцию из ${station.country}. Жанры: ${station.tags}.`,
     "broadcastDisplayName": station.name,
     "provider": {
       "@type": "Organization",
-      "name": "PixelPop FM"
+      "name": "popfm.ru"
     },
     "areaServed": {
       "@type": "Country",
@@ -109,20 +109,20 @@ export function StationDetailPage() {
           {error && (
             <div className="flex flex-col items-center justify-center text-center py-16 bg-retro-background/50 border border-red-500/50 p-8">
               <AlertTriangle className="w-16 h-16 text-red-400 mb-4" />
-              <h2 className="font-pixel text-2xl text-red-400 mb-2">Error Fetching Station</h2>
+              <h2 className="font-pixel text-2xl text-red-400 mb-2">Ошибка загрузки станции</h2>
               <p className="text-retro-accent/80 max-w-md">{error}</p>
-              <Link to="/" className="mt-6 font-mono text-retro-primary hover:underline">Back to Home</Link>
+              <Link to="/" className="mt-6 font-mono text-retro-primary hover:underline">На главную</Link>
             </div>
           )}
           {!isLoading && !error && station && (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
               <Helmet>
-                <title>{`Listen to ${station.name} - PixelPop FM`}</title>
-                <meta name="description" content={`Stream ${station.name} live. An online radio station from ${station.country} featuring ${station.tags}. Tune in on PixelPop FM.`} />
+                <title>{`Слушать ${station.name} - popfm.ru`}</title>
+                <meta name="description" content={`Слушайте ${station.name} в прямом эфире. Онлайн-радиостанция из ${station.country} с жанра��и ${station.tags}. Включайте на popfm.ru.`} />
                 {jsonLd && <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>}
               </Helmet>
               <div className="flex items-center text-lg text-retro-accent/80 mb-4">
-                <Link to="/" className="hover:text-retro-primary">Home</Link>
+                <Link to="/" className="hover:text-retro-primary">Главная</Link>
                 <ChevronRight className="h-5 w-5 mx-1" />
                 <span className="text-retro-accent truncate">{station.name}</span>
               </div>
@@ -140,21 +140,21 @@ export function StationDetailPage() {
                   <p className="text-lg text-retro-accent/80 mb-8">{station.tags.split(',').join(', ')}</p>
                   <div className="flex items-center gap-4 mb-8">
                     <Button onClick={() => playStation(station)} size="lg" className="font-pixel text-xl bg-retro-primary hover:bg-retro-primary/80 text-retro-background px-8 py-6 flex items-center gap-3">
-                      {isPlaying ? <><Pause className="w-6 h-6" /> Playing</> : <><Play className="w-6 h-6" /> Play Now</>}
+                      {isPlaying ? <><Pause className="w-6 h-6" /> В эфире</> : <><Play className="w-6 h-6" /> Слушать</>}
                     </Button>
                     <Button onClick={handleToggleFavorite} variant="ghost" size="icon" className="w-14 h-14 border-2 border-retro-secondary/50 hover:border-retro-secondary hover:shadow-glow-sm">
                       <Star className={cn("w-8 h-8 text-retro-secondary transition-colors", isFavorite && "fill-current text-retro-secondary")} />
                     </Button>
                   </div>
                   <div className="space-y-4 border-t-2 border-retro-primary/30 pt-6">
-                    <InfoItem icon={Globe} label="Country" value={station.country} />
-                    <InfoItem icon={Radio} label="Codec" value={`${station.codec} @ ${station.bitrate}kbps`} />
-                    <InfoItem icon={Heart} label="Votes" value={station.votes} />
-                    <InfoItem icon={Tag} label="Language" value={station.language} />
+                    <InfoItem icon={Globe} label="Страна" value={station.country} />
+                    <InfoItem icon={Radio} label="Кодек" value={`${station.codec} @ ${station.bitrate}kbps`} />
+                    <InfoItem icon={Heart} label="Голоса" value={station.votes} />
+                    <InfoItem icon={Tag} label="Язык" value={station.language} />
                     {station.homepage && (
                        <div className="flex items-center gap-3 text-lg">
                         <BarChart2 className="w-6 h-6 text-retro-secondary" />
-                        <span className="font-mono text-retro-accent/80">Homepage:</span>
+                        <span className="font-mono text-retro-accent/80">Сайт:</span>
                         <a href={station.homepage} target="_blank" rel="noopener noreferrer" className="font-mono font-bold text-retro-primary hover:underline truncate">{station.homepage}</a>
                       </div>
                     )}

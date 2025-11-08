@@ -32,36 +32,37 @@ export function StationsByTagPage() {
         const data = await api<RadioStation[]>(`/api/radio/stations?tag=${decodedTagName}&limit=100&order=votes&reverse=true`);
         setStations(data);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'An unknown error occurred.');
+        setError(err instanceof Error ? err.message : 'Произошла неизвестная ошибка.');
       } finally {
         setIsLoading(false);
       }
     }
     fetchStationsByTag();
   }, [tagName]);
-  const decodedTagName = tagName ? decodeURIComponent(tagName) : 'Genre';
+  const decodedTagName = tagName ? decodeURIComponent(tagName) : 'Жанр';
+  const capitalizedTagName = decodedTagName.charAt(0).toUpperCase() + decodedTagName.slice(1);
   return (
     <AppLayout>
       <Helmet>
-        <title>{`${decodedTagName.charAt(0).toUpperCase() + decodedTagName.slice(1)} Stations - PixelPop FM`}</title>
-        <meta name="description" content={`Listen to the best ${decodedTagName} radio stations from around the world on PixelPop FM.`} />
+        <title>{`Станции в жанре ${capitalizedTagName} - popfm.ru`}</title>
+        <meta name="description" content={`Слушайте лу��шие радиостанции в жанре ${decodedTagName} со всего ��ира на popfm.ru.`} />
       </Helmet>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="py-8 md:py-10 lg:py-12">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
             <div className="flex items-center text-lg text-retro-accent/80 mb-4">
-              <Link to="/genres" className="hover:text-retro-primary">Genres</Link>
+              <Link to="/genres" className="hover:text-retro-primary">Жанры</Link>
               <ChevronRight className="h-5 w-5 mx-1" />
               <span className="text-retro-accent capitalize">{decodedTagName}</span>
             </div>
-            <h1 className="font-pixel text-4xl md:text-5xl text-retro-primary mb-2 capitalize">{decodedTagName} Stations</h1>
-            <p className="text-lg text-retro-accent/80 mb-8">Popular stations in the {decodedTagName} genre.</p>
+            <h1 className="font-pixel text-4xl md:text-5xl text-retro-primary mb-2 capitalize">Жанр: {decodedTagName}</h1>
+            <p className="text-lg text-retro-accent/80 mb-8">Популярные станции в жанре {decodedTagName}.</p>
           </motion.div>
           {isLoading && <StationGridSkeleton />}
           {error && (
             <div className="flex flex-col items-center justify-center text-center py-16 bg-retro-background/50 border border-red-500/50 p-8">
               <AlertTriangle className="w-16 h-16 text-red-400 mb-4" />
-              <h2 className="font-pixel text-2xl text-red-400 mb-2">Error Fetching Stations</h2>
+              <h2 className="font-pixel text-2xl text-red-400 mb-2">Ошибка загрузки станций</h2>
               <p className="text-retro-accent/80 max-w-md">{error}</p>
             </div>
           )}
@@ -87,8 +88,8 @@ export function StationsByTagPage() {
           )}
            {!isLoading && !error && stations.length === 0 && (
             <div className="text-center py-16">
-                <h2 className="font-pixel text-2xl text-retro-secondary mb-2">No Stations Found</h2>
-                <p className="text-retro-accent/80">We couldn't find any stations for this genre.</p>
+                <h2 className="font-pixel text-2xl text-retro-secondary mb-2">Станции не найдены</h2>
+                <p className="text-retro-accent/80">Мы не смогли найти станции для этого жанра.</p>
             </div>
            )}
         </div>
