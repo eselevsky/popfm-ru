@@ -56,14 +56,14 @@ export function HomePage() {
   return (
     <AppLayout>
       <Helmet>
-        <title>popfm.ru - Ретро онлайн-радио плеер</title>
-        <meta name="description" content="Откройте для себя и слушайте тысячи онлайн-радиостанций со всего мира с уникальным ретро-интерфейсом в стиле 90-х на popfm.ru." />
+        <title>Радио слушать онлайн бесплатно - popFM.ru</title>
+        <meta name="description" content="Слушайте более 10000 онлайн радио в прямом эфире. Популярное русское и заруб��жное радио, самая удобная возможность слушать радио бесплатно в хорошем качестве." />
       </Helmet>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="py-8 md:py-10 lg:py-12">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
             <h1 className="font-pixel text-4xl md:text-5xl text-retro-primary mb-2">
-              {debouncedSearchTerm ? `Результаты по "${debouncedSearchTerm}"` : 'Популярные станци�� России'}
+              {debouncedSearchTerm ? `Результаты по "${debouncedSearchTerm}"` : 'Популярные станции России'}
             </h1>
             <p className="text-lg text-retro-accent/80 mb-8">
               {debouncedSearchTerm ? 'Станции, соответствующие вашему поиску.' : 'Лучшие радиостанции из России.'}
