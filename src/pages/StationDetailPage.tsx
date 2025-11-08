@@ -154,7 +154,7 @@ export function StationDetailPage() {
                   <div className="space-y-4 border-t-2 border-retro-primary/30 pt-6">
                     <InfoItem icon={Globe} label="Страна" value={translateCountry(station.country)} />
                     <InfoItem icon={Radio} label="Кодек" value={`${station.codec} @ ${station.bitrate}kbps`} />
-                    <InfoItem icon={Heart} label="��олоса" value={station.votes} />
+                    <InfoItem icon={Heart} label="Голоса" value={station.votes} />
                     <InfoItem icon={Tag} label="Язык" value={station.language} />
                     {station.homepage && (
                        <div className="flex items-center gap-3 text-lg">
