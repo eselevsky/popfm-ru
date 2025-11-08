@@ -1,13 +1,15 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { Skeleton } from '@/components/ui/skeleton';
 import { api } from '@/lib/api-client';
 import type { StationTag } from '@shared/types';
 import { motion } from 'framer-motion';
-import { AlertTriangle, Music } from 'lucide-react';
+import { AlertTriangle, Music, Loader } from 'lucide-react';
 import { SearchAndFilter } from '@/components/SearchAndFilter';
 import { Helmet } from 'react-helmet-async';
+import { useDebounce } from 'react-use';
+const LIMIT = 36;
 function GenreGridSkeleton() {
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
@@ -22,28 +24,73 @@ export function GenresPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
-  useEffect(() => {
-    async function fetchTags() {
-      try {
-        setIsLoading(true);
-        setError(null);
-        const data = await api<StationTag[]>('/api/radio/tags?order=stationcount&reverse=true&hidebroken=true');
-        setTags(data);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Произошла неизвестная ошибка.');
-      } finally {
-        setIsLoading(false);
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
+  // State for infinite scroll
+  const [offset, setOffset] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
+  const [isFetchingMore, setIsFetchingMore] = useState(false);
+  const observer = useRef<IntersectionObserver>();
+  const lastElementRef = useCallback((node: HTMLDivElement) => {
+    if (isLoading || isFetchingMore) return;
+    if (observer.current) observer.current.disconnect();
+    observer.current = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting && hasMore) {
+        setOffset(prevOffset => prevOffset + LIMIT);
       }
+    });
+    if (node) observer.current.observe(node);
+  }, [isLoading, isFetchingMore, hasMore]);
+  useDebounce(() => {
+    setDebouncedSearchTerm(searchTerm);
+  }, 500, [searchTerm]);
+  const fetchTags = useCallback(async (isNewSearch: boolean) => {
+    if (isNewSearch) {
+      setIsLoading(true);
+    } else {
+      if (isFetchingMore) return;
+      setIsFetchingMore(true);
     }
-    fetchTags();
-  }, []);
-  const filteredTags = useMemo(() => {
-    return tags.filter(tag => tag.name.toLowerCase().includes(searchTerm.toLowerCase()));
-  }, [tags, searchTerm]);
+    setError(null);
+    try {
+      const currentOffset = isNewSearch ? 0 : offset;
+      const params = new URLSearchParams();
+      params.append('order', 'stationcount');
+      params.append('reverse', 'true');
+      params.append('hidebroken', 'true');
+      params.append('limit', String(LIMIT));
+      params.append('offset', String(currentOffset));
+      if (debouncedSearchTerm) {
+        params.append('name', debouncedSearchTerm);
+      }
+      const data = await api<StationTag[]>(`/api/radio/tags?${params.toString()}`);
+      if (isNewSearch) {
+        setTags(data);
+        setOffset(data.length);
+      } else {
+        setTags(prevTags => [...prevTags, ...data]);
+      }
+      setHasMore(data.length === LIMIT);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Прои��ошла неизвестная ошибка.');
+    } finally {
+      setIsLoading(false);
+      setIsFetchingMore(false);
+    }
+  }, [offset, debouncedSearchTerm, isFetchingMore]);
+  // Effect for new searches
+  useEffect(() => {
+    fetchTags(true);
+  }, [debouncedSearchTerm]);
+  // Effect for infinite scroll
+  useEffect(() => {
+    if (offset > 0) {
+      fetchTags(false);
+    }
+  }, [offset]);
   return (
     <AppLayout>
       <Helmet>
-        <title>Поиск по жанрам - popfm.ru</title>
+        <title>Пои��к по жанрам - popfm.ru</title>
         <meta name="description" content="Находите онлайн-радиостанции, просматривая огромную коллекцию жанров, от рока и поп-музыки до джаза и классики, на popfm.ru." />
       </Helmet>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -62,19 +109,35 @@ export function GenresPage() {
             </div>
           )}
           {!isLoading && !error && (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-              {filteredTags.map((tag) => (
-                <Link
-                  to={`/genres/${encodeURIComponent(tag.name)}`}
-                  key={tag.name}
-                  className="group relative flex flex-col items-center justify-center text-center p-4 bg-black/30 border-2 border-retro-primary/30 hover:border-retro-secondary hover:shadow-glow transition-all duration-300 h-24"
-                >
-                  <Music className="w-6 h-6 text-retro-secondary mb-2 transition-transform group-hover:scale-110" />
-                  <h3 className="font-mono text-sm font-bold text-retro-accent capitalize line-clamp-2">{tag.name}</h3>
-                  <p className="text-xs text-retro-secondary/70">{tag.stationcount} станций</p>
-                </Link>
-              ))}
-            </div>
+            <>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+                {tags.map((tag) => (
+                  <Link
+                    to={`/genres/${encodeURIComponent(tag.name)}`}
+                    key={tag.name}
+                    className="group relative flex flex-col items-center justify-center text-center p-4 bg-black/30 border-2 border-retro-primary/30 hover:border-retro-secondary hover:shadow-glow transition-all duration-300 h-24"
+                  >
+                    <Music className="w-6 h-6 text-retro-secondary mb-2 transition-transform group-hover:scale-110" />
+                    <h3 className="font-mono text-sm font-bold text-retro-accent capitalize line-clamp-2">{tag.name}</h3>
+                    <p className="text-xs text-retro-secondary/70">{tag.stationcount} станций</p>
+                  </Link>
+                ))}
+              </div>
+              <div ref={lastElementRef} className="h-10 flex justify-center items-center">
+                {isFetchingMore && <Loader className="w-8 h-8 text-retro-secondary animate-spin" />}
+              </div>
+              {!hasMore && tags.length > 0 && (
+                <div className="text-center text-retro-secondary/70 mt-8">
+                  <p>-- Конец списка --</p>
+                </div>
+              )}
+              {tags.length === 0 && !isLoading && (
+                 <div className="text-center py-16">
+                    <h2 className="font-pixel text-2xl text-retro-secondary mb-2">Жанры не найден��</h2>
+                    <p className="text-retro-accent/80">Попробуйте другой поисковый ��апрос.</p>
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>
