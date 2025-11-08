@@ -89,7 +89,7 @@ export function StationDetailPage() {
   };
   const translatedTags = station?.tags ? station.tags.split(',').map(tag => translateGenre(tag.trim())).join(', ') : '';
   const metaDescription = station
-    ? `${station.name} слу��ать радио онлайн бесплатно в жанрах ${translatedTags} из ${translateCountry(station.country)} на popFM.ru`.substring(0, 158)
+    ? `${station.name} слушать радио онлайн бесплатно в жанрах ${translatedTags} из ${translateCountry(station.country)} на popFM.ru`.substring(0, 158)
     : 'Слушайте онлайн-радио на popFM.ru';
   const jsonLd = station ? {
     "@context": "https://schema.org",

@@ -56,8 +56,8 @@ export function HomePage() {
   return (
     <AppLayout>
       <Helmet>
-        <title>Радио слушать онлайн бесплатно - popFM.ru</title>
-        <meta name="description" content="Слушайте более 10000 онлайн радио в прямом эфире. Популярное русское и заруб��жное радио, самая удобная возможность слушать радио бесплатно в хорошем качестве." />
+        <title>Онлайн радио слушать бесплатно - прямой эфир - popFM</title>
+        <meta name="description" content="Слушайте популярные радиостанции в прямом эфире. Бесплатный доступ к тысячам радио онлайн со всего мира. Музыка, новости, спорт – всё в одном месте." />
       </Helmet>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="py-8 md:py-10 lg:py-12">
