@@ -66,7 +66,7 @@ export const usePlayerStore = create<PlayerState>((set, get) => ({
     if (status === 'playing') {
       set({ status: 'paused' });
     } else if (status === 'paused') {
-      set({ status: 'loading' });
+      set({ status: 'playing' });
     }
   },
   stop: () => {

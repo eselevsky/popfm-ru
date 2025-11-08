@@ -65,6 +65,11 @@ export function RadioPlayer() {
         console.error("Initial play() failed:", e);
         // The 'error' event listener will handle this failure and trigger the fallback.
       });
+    } else if (status === 'playing') {
+      audio.play().catch((e) => {
+        console.error("Play() failed:", e);
+        handlePlaybackError();
+      });
     } else if (status === 'paused') {
       audio.pause();
     } else if (status === 'stopped') {
