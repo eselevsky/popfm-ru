@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { usePlayerStore } from '@/store/playerStore';
 import { Play, Pause, StopCircle, Loader, AlertTriangle, Volume2, Volume1, VolumeX } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -13,24 +13,32 @@ export function RadioPlayer() {
   const volume = usePlayerStore((s) => s.volume);
   const isMuted = usePlayerStore((s) => s.isMuted);
   const setStatus = usePlayerStore((s) => s.setStatus);
-  const setError = usePlayerStore((s) => s.setError);
   const setVolume = usePlayerStore((s) => s.setVolume);
   const toggleMute = usePlayerStore((s) => s.toggleMute);
   const togglePlayPause = usePlayerStore((s) => s.togglePlayPause);
   const stop = usePlayerStore((s) => s.stop);
+  const handlePlaybackError = usePlayerStore((s) => s.handlePlaybackError);
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
     const handlePlay = () => setStatus('playing');
-    const handlePause = () => setStatus('paused');
+    const handlePause = () => {
+      // Only set to paused if it wasn't an intentional stop
+      if (usePlayerStore.getState().status !== 'stopped') {
+        setStatus('paused');
+      }
+    };
     const handleError = () => {
       console.error('Audio Error:', audio.error);
-      setError(`Ошибка воспроизведения: ${audio.error?.message || 'Неизвест��ая ошибка'}`);
+      handlePlaybackError();
     };
     const handleStalled = () => setStatus('loading');
     const handleCanPlay = () => {
-      if (status === 'loading') {
-        audio.play().catch(handleError);
+      if (usePlayerStore.getState().status === 'loading') {
+        audio.play().catch(e => {
+          console.error("Autoplay failed on canplay:", e);
+          // The error event will be caught by handleError if it's a real issue
+        });
       }
     };
     audio.addEventListener('play', handlePlay);
@@ -45,7 +53,7 @@ export function RadioPlayer() {
       audio.removeEventListener('stalled', handleStalled);
       audio.removeEventListener('canplay', handleCanPlay);
     };
-  }, [setStatus, setError, status]);
+  }, [setStatus, handlePlaybackError]);
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
@@ -53,8 +61,8 @@ export function RadioPlayer() {
       audio.src = currentStation.url_resolved;
       audio.load();
       audio.play().catch((e) => {
-        console.error("Autoplay failed:", e);
-        setError("Автовоспроизведение запре��ено. Нажмите play.");
+        console.error("Initial play() failed:", e);
+        // The 'error' event listener will handle this failure and trigger the fallback.
       });
     } else if (status === 'paused') {
       audio.pause();
@@ -62,7 +70,7 @@ export function RadioPlayer() {
       audio.pause();
       audio.src = '';
     }
-  }, [status, currentStation, setError]);
+  }, [status, currentStation]);
   useEffect(() => {
     const audio = audioRef.current;
     if (audio) {
@@ -93,7 +101,9 @@ export function RadioPlayer() {
                 />
                 <div className="flex-1 overflow-hidden">
                   <p className="text-lg font-pixel text-retro-accent truncate">{currentStation.name}</p>
-                  <p className="text-sm text-retro-secondary truncate">{currentStation.country}</p>
+                  <p className="text-sm text-retro-secondary truncate">
+                    {status === 'loading' && error ? error : currentStation.country}
+                  </p>
                 </div>
               </div>
               <div className="flex items-center gap-2 md:gap-4">

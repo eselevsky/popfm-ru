@@ -47,7 +47,7 @@ export function CountriesPage() {
   return (
     <AppLayout>
       <Helmet>
-        <title>Поис�� по странам - popfm.ru</title>
+        <title>Поиск по странам - popfm.ru</title>
         <meta name="description" content="Исследуйте онлайн-радиостанции из стран со всего мира. Найдите свою любимую международную трансляцию на popfm.ru." />
       </Helmet>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -75,7 +75,7 @@ export function CountriesPage() {
                 >
                   <Globe className="w-6 h-6 text-retro-secondary mb-2 transition-transform group-hover:scale-110" />
                   <h3 className="font-mono text-base font-bold text-retro-accent line-clamp-2">{translateCountry(country.name)}</h3>
-                  <p className="text-xs text-retro-secondary/70">{country.stationcount} станци��</p>
+                  <p className="text-xs text-retro-secondary/70">{country.stationcount} станций</p>
                 </Link>
               ))}
             </div>

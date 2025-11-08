@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import type { RadioStation } from '@shared/types';
+import { api } from '@/lib/api-client';
 export type PlayerStatus = 'playing' | 'paused' | 'stopped' | 'loading' | 'error';
 interface PlayerState {
   currentStation: RadioStation | null;
@@ -7,6 +8,8 @@ interface PlayerState {
   error: string | null;
   volume: number;
   isMuted: boolean;
+  stationQueue: RadioStation[];
+  currentQueueIndex: number;
   playStation: (station: RadioStation) => void;
   togglePlayPause: () => void;
   stop: () => void;
@@ -14,6 +17,7 @@ interface PlayerState {
   setError: (error: string | null) => void;
   setVolume: (volume: number) => void;
   toggleMute: () => void;
+  handlePlaybackError: () => Promise<void>;
 }
 const getInitialVolume = (): number => {
   try {
@@ -35,12 +39,20 @@ export const usePlayerStore = create<PlayerState>((set, get) => ({
   error: null,
   volume: getInitialVolume(),
   isMuted: false,
+  stationQueue: [],
+  currentQueueIndex: 0,
   playStation: (station) => {
     const { currentStation, status } = get();
-    if (currentStation?.stationuuid === station.stationuuid && status === 'playing') {
+    if (currentStation?.stationuuid === station.stationuuid && (status === 'playing' || status === 'loading')) {
       return;
     }
-    set({ currentStation: station, status: 'loading', error: null });
+    set({ 
+      currentStation: station, 
+      status: 'loading', 
+      error: null,
+      stationQueue: [station],
+      currentQueueIndex: 0,
+    });
   },
   togglePlayPause: () => {
     const { status } = get();
@@ -51,7 +63,13 @@ export const usePlayerStore = create<PlayerState>((set, get) => ({
     }
   },
   stop: () => {
-    set({ currentStation: null, status: 'stopped' });
+    set({ 
+      currentStation: null, 
+      status: 'stopped',
+      stationQueue: [],
+      currentQueueIndex: 0,
+      error: null,
+    });
   },
   setStatus: (status) => {
     set({ status });
@@ -70,5 +88,41 @@ export const usePlayerStore = create<PlayerState>((set, get) => ({
   },
   toggleMute: () => {
     set((state) => ({ isMuted: !state.isMuted }));
+  },
+  handlePlaybackError: async () => {
+    const { stationQueue, currentQueueIndex, currentStation } = get();
+    if (!currentStation) return;
+    // On first error for this station, fetch alternatives
+    if (currentQueueIndex === 0 && stationQueue.length === 1) {
+      try {
+        const alternatives = await api<RadioStation[]>(`/api/radio/stations?name=${encodeURIComponent(currentStation.name)}&hidebroken=true&limit=5`);
+        const newQueue = [
+          currentStation, 
+          ...alternatives.filter(s => s.stationuuid !== currentStation.stationuuid)
+        ];
+        set({ stationQueue: newQueue });
+      } catch (apiError) {
+        console.error("Failed to fetch alternative stations:", apiError);
+        // Proceed without alternatives
+      }
+    }
+    const nextIndex = get().currentQueueIndex + 1;
+    const currentQueue = get().stationQueue;
+    if (nextIndex < currentQueue.length) {
+      const nextStation = currentQueue[nextIndex];
+      set({
+        currentQueueIndex: nextIndex,
+        currentStation: nextStation,
+        status: 'loading',
+        error: `Поток #${nextIndex} недоступен, пробую следующий...`,
+      });
+    } else {
+      set({
+        status: 'error',
+        error: 'Все доступные потоки для этой станции не работают.',
+        stationQueue: [],
+        currentQueueIndex: 0,
+      });
+    }
   },
 }));
